@@ -15,11 +15,13 @@ public class State {
 	}
 	
 	public int nextState(char input){
+		System.out.print(id + " -> ");
 		for (String key : transitions.keySet()) {
 			Pattern pattern = Pattern.compile(key);
 			char [] inputString = new char[1];
 			inputString[0] = input;
 			if(pattern.matcher(new String(inputString)).matches()){
+				System.out.println(transitions.get(key));
 				return transitions.get(key);
 			}
 		}

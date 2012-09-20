@@ -1,15 +1,15 @@
 package compilador.lexico;
 
 public class Token {
-	private String value;
+	private Integer value;
 	private TokenType type;
 
-	public Token(String value, TokenType type) {
+	public Token(Integer value, TokenType type) {
 		this.value = value;
 		this.type = type;
 	}
 
-	public String getValue() {
+	public Integer getValue() {
 		return value;
 	}
 
