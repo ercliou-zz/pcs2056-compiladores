@@ -6,10 +6,12 @@ public class Automaton {
 	private State actualState;
 	private Set<State> states;
 	private String source;
+	private int initialState;
 
 	public Automaton(int initialState, Set<State> states) {
 		this.states = states;
-		this.actualState = getState(initialState);
+		this.initialState = initialState;
+		resetAutomaton();
 	}
 
 	public void setSource(String source) {
@@ -21,12 +23,21 @@ public class Automaton {
 			char input = extractCharacter();
 			actualState = getState(actualState.nextState(input));
 		} else {
-			throw new RuntimeException("A cadeira de entrada não possui mais símbolos");
+			throw new RuntimeException(
+					"A cadeia de entrada não possui mais símbolos");
 		}
+	}
+
+	public boolean completed() {
+		return source.length() == 0;
 	}
 
 	public State getActualState() {
 		return actualState;
+	}
+
+	public void resetAutomaton() {
+		actualState = getState(initialState);
 	}
 
 	private State getState(int stateId) {

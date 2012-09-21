@@ -106,48 +106,54 @@ public class LexicalAnalyserImpl implements LexicalAnalyser {
 
 	public LexicalResult analyse(SymbolTable symbolTable, String sourceText,
 			int cursor) {
+		automaton.resetAutomaton();
 		int stepCount = 0;
 		int tokenBegin = 0;
 		int stateBuffer = automaton.getActualState().getId();
 		automaton.setSource(sourceText.substring(cursor));
-		while (!automaton.getActualState().equals(0)) {
-			
+		while (!automaton.completed()
+				&& automaton.getActualState().getId() != 0) {
 			if (automaton.getActualState().getId() != 1 && stateBuffer == 1) {
-				tokenBegin = stepCount;
+				tokenBegin = stepCount - 1;
 			}
 			stateBuffer = automaton.getActualState().getId();
 			automaton.step();
 			stepCount++;
-			
 		}
-		String tokenString = sourceText.substring(tokenBegin, stepCount);
+		String tokenString = sourceText.substring(cursor + tokenBegin, cursor
+				+ stepCount - 1);
 		TokenType type = classify(stateBuffer, tokenString);
 		Integer value = null;
-		if (type.equals(TokenType.IDENTIFIER)) {
-			if (!symbolTable.contains(tokenString)) {
-				value = symbolTable.put(tokenString);
+		if (type != null) {
+			if (type.equals(TokenType.IDENTIFIER)) {
+				if (!symbolTable.contains(tokenString)) {
+					value = symbolTable.put(tokenString);
+				} else {
+					value = symbolTable.get(tokenString);
+				}
+			} else if (type.equals(TokenType.NUMERIC)) {
+				value = Integer.parseInt(tokenString);
+			} else if (type.equals(TokenType.OTHER)) {
+				value = (int) tokenString.charAt(0);
 			}
-		} else if(type.equals(TokenType.NUMERIC)){
-			value = Integer.parseInt(tokenString);
-		} else if(type.equals(TokenType.KEYWORD)){
-//			value = 
-		} else if(type.equals(TokenType.OTHER)){
-			value = (int) tokenString.charAt(0);
-		}
 
-		LexicalResult result = new LexicalResult();
-		result.setCursor(stepCount);
-		result.setToken(new Token(value, type));
-		return result;
+			LexicalResult result = new LexicalResult();
+			result.setCursor(cursor + stepCount - 1);
+			result.setToken(new Token(value, type));
+			return result;
+		}
+		return null;
 	}
 
 	private TokenType classify(int lastState, String tokenString) {
+//		System.out.println("Classifying: Last State=" + lastState
+//				+ " Token String=" + tokenString);
 		switch (lastState) {
 			case 2 :
 				return TokenType.NUMERIC;
 			case 3 :
-				if (Keywords.getInstance().contains(tokenString)) {
-					return TokenType.KEYWORD;
+				if (TokenType.isKeyword(tokenString)) {
+					return TokenType.getKeywordEnum(tokenString);
 				}
 				return TokenType.IDENTIFIER;
 			case 5 :

@@ -16,5 +16,10 @@ public class LexicalResult {
 	public void setCursor(int cursor) {
 		this.cursor = cursor;
 	}
+	
+	@Override 
+	public String toString() {
+		return "token: " + token + " cursor: " + cursor;
+	}
 
 }
