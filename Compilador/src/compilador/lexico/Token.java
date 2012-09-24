@@ -1,5 +1,10 @@
 package compilador.lexico;
 
+/**
+ * Classe que representa um token, contendo seu tipo e o valor, que contém
+ * informações adicionais sobre o token (quando necessário)
+ * 
+ */
 public class Token {
 	private Integer value;
 	private TokenType type;
@@ -21,5 +26,5 @@ public class Token {
 	public String toString() {
 		return "[" + type + " " + value + "]";
 	}
-	
+
 }

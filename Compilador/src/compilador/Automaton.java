@@ -2,6 +2,10 @@ package compilador;
 
 import java.util.Set;
 
+/**
+ * Classe que representa um automato genérico
+ * 
+ */
 public class Automaton {
 	private State actualState;
 	private Set<State> states;

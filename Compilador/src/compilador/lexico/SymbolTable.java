@@ -3,6 +3,11 @@ package compilador.lexico;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Tabela de símbolos, contém o mapeamento dos símbolos reconhecidos no texto
+ * fonte com os ID's atribuídos à eles
+ * 
+ */
 public class SymbolTable {
 
 	private List<String> table;

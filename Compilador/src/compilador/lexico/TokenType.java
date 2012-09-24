@@ -1,42 +1,69 @@
 package compilador.lexico;
 
-
+/**
+ * Enumeração dos possíveis tipos de tokens da nossa linguagem
+ * 
+ */
 public enum TokenType {
-	NUMERIC, IDENTIFIER, GREATER_OR_EQUALS, LESS_OR_EQUALS, EQUALS, DIFFERENT, OTHER, STRING,
-	KW_BREAK("break"), KW_CHAR("char"), KW_CONST("const"), KW_DOUBLE("double"), KW_ELSE("else"), KW_FLOAT("float"), KW_WHILE("while"), KW_IF("if"), KW_INT("int"), KW_LONG("long"), KW_RETURN("return"), KW_STATIC("static"), KW_VOID("void");
-	
+	NUMERIC, IDENTIFIER, GREATER_OR_EQUALS, LESS_OR_EQUALS, EQUALS, DIFFERENT, OTHER, STRING, KW_BREAK(
+			"break"), KW_CHAR("char"), KW_CONST("const"), KW_DOUBLE("double"), KW_ELSE(
+			"else"), KW_FLOAT("float"), KW_WHILE("while"), KW_IF("if"), KW_INT(
+			"int"), KW_LONG("long"), KW_RETURN("return"), KW_STATIC("static"), KW_VOID(
+			"void");
+
 	private boolean isKeyword;
 	private String keyword;
-	
-	private TokenType(){
+
+	private TokenType() {
 		isKeyword = false;
 	}
-	
-	private TokenType(String keyword){
+
+	private TokenType(String keyword) {
 		isKeyword = true;
 		this.keyword = keyword;
 	}
 	
-	public boolean isKeyword(){
+	/**
+	 * 
+	 * @return <code> true </code> caso seja uma palavra reservada e
+	 *         <code> false </code> caso contrário
+	 */
+	public boolean isKeyword() {
 		return isKeyword;
 	}
-	
-	public boolean equals(String keyword){
+
+	private boolean equals(String keyword) {
 		return this.keyword.equals(keyword);
 	}
-	
-	public static TokenType getKeywordEnum(String keyword){
+
+	/**
+	 * Método que devolve o tipo de um token de uma palavra reservada a partir
+	 * de uma string com o valor desta palavra
+	 * 
+	 * @param keyword
+	 *            String com o valor da palavra reservada
+	 * @return O tipo referente à palavra reservada passada
+	 */
+	public static TokenType getKeywordEnum(String keyword) {
 		for (TokenType type : values()) {
-			if(type.isKeyword() && type.equals(keyword)){
+			if (type.isKeyword() && type.equals(keyword)) {
 				return type;
 			}
 		}
 		return null;
 	}
-	
-	public static boolean isKeyword(String keyword){
+
+	/**
+	 * Método que diz se uma palavra é reservada ou não
+	 * 
+	 * @param word
+	 *            p
+	 * @return <code> true </code> se a string for uma palavra reservada e
+	 *         <code> false </code> caso contrário
+	 */
+	public static boolean isKeyword(String word) {
 		for (TokenType type : values()) {
-			if(type.isKeyword() && type.equals(keyword)){
+			if (type.isKeyword() && type.equals(word)) {
 				return true;
 			}
 		}
