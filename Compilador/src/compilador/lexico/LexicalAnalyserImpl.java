@@ -147,7 +147,7 @@ public class LexicalAnalyserImpl implements LexicalAnalyser {
 
 		// loop, exeutando passo-à-passo o automato, enquanto houver caracteres
 		// na cadeia ou não for um estado final
-		while (!automaton.getActualState().isFinalState()) {
+		while (automaton.getActualState().getId() != 0) {
 			if (automaton.getActualState().getId() != 1 && stateBuffer == 1) {
 				tokenBegin = stepCount - 1;
 			}
