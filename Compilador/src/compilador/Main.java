@@ -1,21 +1,26 @@
 package compilador;
 
+import java.io.IOException;
+
+import compilador.lexico.LexicalAnalyser;
 import compilador.lexico.LexicalAnalyserImpl;
 import compilador.lexico.LexicalResult;
 import compilador.lexico.SymbolTable;
 
-public class Tester {
-	public static void main(String[] args) {
+public class Main {
+	public static void main(String[] args) throws IOException {
+		
 		SymbolTable st = new SymbolTable();
 		LexicalAnalyser la = new LexicalAnalyserImpl();
-		LexicalResult r = new LexicalResult();
-		r.setToken(null);
-		r.setCursor(0);
+		
+		
+		LexicalResult r = LexicalResult.startResult();
 		while (r != null) {
-			r = la.analyse(st, "teste batata teste != <= == - if teste1 1002\n",
+			r = la.analyse(st, FileExtractor.extract("source.txt"),
 					r.getCursor());
 			System.out.println(r);
 		}
+		System.out.println(st);
 
 	}
 }

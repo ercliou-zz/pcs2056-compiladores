@@ -6,7 +6,6 @@ import java.util.Map;
 import java.util.Set;
 
 import compilador.Automaton;
-import compilador.LexicalAnalyser;
 import compilador.State;
 
 public class LexicalAnalyserImpl implements LexicalAnalyser {
@@ -18,7 +17,7 @@ public class LexicalAnalyserImpl implements LexicalAnalyser {
 
 		// ESTADO 1
 		Map<String, Integer> transitions = new HashMap<String, Integer>();
-		transitions.put("[\n \t]", 1);
+		transitions.put("[\r\n \t]", 1);
 		transitions.put("[0-9]", 2);
 		transitions.put("[a-zA-Z]", 3);
 		transitions.put(">", 4);
@@ -26,7 +25,8 @@ public class LexicalAnalyserImpl implements LexicalAnalyser {
 		transitions.put("=", 8);
 		transitions.put("!", 10);
 		transitions.put("/", 12);
-		transitions.put("[^\n \t0-9a-zA-Z><=!/]", 14);
+		transitions.put("[^\r\n \t0-9a-zA-Z><=!/]", 14);
+		transitions.put("\"", 15);
 		states.add(new State(1, transitions, false));
 
 		// ESTADO 2
@@ -44,46 +44,51 @@ public class LexicalAnalyserImpl implements LexicalAnalyser {
 		// ESTADO 4
 		transitions = new HashMap<String, Integer>();
 		transitions.put("=", 5);
+		transitions.put("[^=]", 0);
 		states.add(new State(4, transitions, false));
 
 		// ESTADO 5
 		transitions = new HashMap<String, Integer>();
-		transitions.put(".", 0);
+		transitions.put(".|\n|\r", 0);
 		states.add(new State(5, transitions, false));
 
 		// ESTADO 6
 		transitions = new HashMap<String, Integer>();
 		transitions.put("=", 7);
+		transitions.put("[^=]", 0);
 		states.add(new State(6, transitions, false));
 
 		// ESTADO 7
 		transitions = new HashMap<String, Integer>();
-		transitions.put(".", 0);
+		transitions.put(".|\n|\r", 0);
 		states.add(new State(7, transitions, false));
 
 		// ESTADO 8
 		transitions = new HashMap<String, Integer>();
 		transitions.put("=", 9);
+		transitions.put("[^=]", 0);
 		states.add(new State(8, transitions, false));
 
 		// ESTADO 9
 		transitions = new HashMap<String, Integer>();
-		transitions.put(".", 0);
+		transitions.put(".|\n|\r", 0);
 		states.add(new State(9, transitions, false));
 
 		// ESTADO 10
 		transitions = new HashMap<String, Integer>();
 		transitions.put("=", 11);
+		transitions.put("[^=]", 0);
 		states.add(new State(10, transitions, false));
 
 		// ESTADO 11
 		transitions = new HashMap<String, Integer>();
-		transitions.put(".", 0);
+		transitions.put(".|\n|\r", 0);
 		states.add(new State(11, transitions, false));
 
 		// ESTADO 12
 		transitions = new HashMap<String, Integer>();
 		transitions.put("/", 13);
+		transitions.put("[^/]", 0);
 		states.add(new State(12, transitions, false));
 
 		// ESTADO 13
@@ -94,8 +99,19 @@ public class LexicalAnalyserImpl implements LexicalAnalyser {
 
 		// ESTADO 14
 		transitions = new HashMap<String, Integer>();
-		transitions.put(".", 0);
+		transitions.put(".|\n|\r", 0);
 		states.add(new State(14, transitions, false));
+		
+		// ESTADO 15 (String começo e conteúdo)
+		transitions = new HashMap<String, Integer>();
+		transitions.put("[^\"]", 15);
+		transitions.put("[\"]", 16);
+		states.add(new State(15, transitions, false));
+		
+		// ESTADO 16 (String final)
+		transitions = new HashMap<String, Integer>();
+		transitions.put(".|\n|\r", 0);
+		states.add(new State(16, transitions, false));
 
 		// ESTADO 0
 		transitions = new HashMap<String, Integer>();
@@ -111,25 +127,32 @@ public class LexicalAnalyserImpl implements LexicalAnalyser {
 		int tokenBegin = 0;
 		int stateBuffer = automaton.getActualState().getId();
 		automaton.setSource(sourceText.substring(cursor));
-		while (!automaton.completed()
-				&& automaton.getActualState().getId() != 0) {
+		while (automaton.getActualState().getId() != 0) {
 			if (automaton.getActualState().getId() != 1 && stateBuffer == 1) {
 				tokenBegin = stepCount - 1;
 			}
 			stateBuffer = automaton.getActualState().getId();
-			automaton.step();
 			stepCount++;
+			if (!automaton.completed()) {
+				automaton.step();
+			} else {
+				break;
+			}
 		}
 		String tokenString = sourceText.substring(cursor + tokenBegin, cursor
 				+ stepCount - 1);
 		TokenType type = classify(stateBuffer, tokenString);
 		Integer value = null;
 		if (type != null) {
-			if (type.equals(TokenType.IDENTIFIER)) {
-				if (!symbolTable.contains(tokenString)) {
-					value = symbolTable.put(tokenString);
+			if (type.equals(TokenType.IDENTIFIER) || type.equals(TokenType.STRING)) {
+				String processedString = tokenString;
+				if(type.equals(TokenType.STRING)){
+					processedString = tokenString.substring(1, tokenString.length()-1);
+				}
+				if (!symbolTable.contains(processedString)) {
+					value = symbolTable.put(processedString);
 				} else {
-					value = symbolTable.get(tokenString);
+					value = symbolTable.get(processedString);
 				}
 			} else if (type.equals(TokenType.NUMERIC)) {
 				value = Integer.parseInt(tokenString);
@@ -146,9 +169,11 @@ public class LexicalAnalyserImpl implements LexicalAnalyser {
 	}
 
 	private TokenType classify(int lastState, String tokenString) {
-//		System.out.println("Classifying: Last State=" + lastState
-//				+ " Token String=" + tokenString);
+//		 System.out.println("Classifying: Last State=" + lastState
+//		 + " Token String=" + tokenString);
 		switch (lastState) {
+			case 1 :
+				return null;
 			case 2 :
 				return TokenType.NUMERIC;
 			case 3 :
@@ -165,9 +190,16 @@ public class LexicalAnalyserImpl implements LexicalAnalyser {
 			case 11 :
 				return TokenType.DIFFERENT;
 			case 14 :
+			case 4 :
+			case 6 :
+			case 8 :
+			case 10 :
+			case 12 :
 				return TokenType.OTHER;
+			case 16 :
+				return TokenType.STRING;
 		}
-		return null;
+		throw new RuntimeException("Erro na classificação do token.");
 	}
 
 }

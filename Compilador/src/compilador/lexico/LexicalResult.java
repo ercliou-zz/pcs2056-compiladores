@@ -1,5 +1,6 @@
 package compilador.lexico;
 
+
 public class LexicalResult {
 	private Token token;
 	private int cursor;
@@ -20,6 +21,13 @@ public class LexicalResult {
 	@Override 
 	public String toString() {
 		return "token: " + token + " cursor: " + cursor;
+	}
+	
+	public static LexicalResult startResult(){
+		LexicalResult lr = new LexicalResult();
+		lr.setCursor(0);
+		lr.setToken(null);
+		return lr;
 	}
 
 }
