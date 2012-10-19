@@ -22,7 +22,7 @@ public class Main {
 		LexicalResult r = LexicalResult.startResult();
 		while (r != null) {
 			// Extração da cadeia de caracteres do arquivo fonte
-			String sourceText = FileExtractor.extract("source_example.txt");
+			String sourceText = FileExtractor.extract(args[0]);
 			if (r != null && r.getToken() != null) {
 				// Imprimindo o token gerado
 				System.out.println(r.getToken());

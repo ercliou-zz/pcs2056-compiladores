@@ -7,7 +7,8 @@ package compilador.lexico;
 public enum TokenType {
 	NUMERIC, IDENTIFIER, GREATER_OR_EQUALS, LESS_OR_EQUALS, EQUALS, DIFFERENT, OTHER, KW_ELSE(
 			"else"), KW_WHILE("while"), KW_IF("if"), KW_INT("int"), KW_RETURN(
-			"return"), KW_VOID("void");
+			"return"), KW_VOID("void"), KW_AND("AND"), KW_OR("OR"), KW_MAIN(
+			"main"), KW_READ("read"), KW_WRITE("write");
 
 	private boolean isKeyword;
 	private String keyword;
