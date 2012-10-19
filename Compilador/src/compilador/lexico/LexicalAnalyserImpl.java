@@ -34,7 +34,6 @@ public class LexicalAnalyserImpl implements LexicalAnalyser {
 		transitions.put("!", 10);
 		transitions.put("/", 12);
 		transitions.put("[^\r\n \t0-9a-zA-Z><=!/]", 14);
-		transitions.put("\"", 15);
 		states.add(new State(1, transitions, false));
 
 		// ESTADO 2 (números)
@@ -110,17 +109,6 @@ public class LexicalAnalyserImpl implements LexicalAnalyser {
 		transitions.put(".|\n|\r", 0);
 		states.add(new State(14, transitions, false));
 
-		// ESTADO 15 (String começo e conteúdo)
-		transitions = new HashMap<String, Integer>();
-		transitions.put("[^\"]", 15);
-		transitions.put("[\"]", 16);
-		states.add(new State(15, transitions, false));
-
-		// ESTADO 16 (String final)
-		transitions = new HashMap<String, Integer>();
-		transitions.put(".|\n|\r", 0);
-		states.add(new State(16, transitions, false));
-
 		// ESTADO 0 (estado final)
 		transitions = new HashMap<String, Integer>();
 		states.add(new State(0, transitions, true));
@@ -166,13 +154,8 @@ public class LexicalAnalyserImpl implements LexicalAnalyser {
 		TokenType type = classify(stateBuffer, tokenString);
 		Integer value = null;
 		if (type != null) {
-			if (type.equals(TokenType.IDENTIFIER)
-					|| type.equals(TokenType.STRING)) {
+			if (type.equals(TokenType.IDENTIFIER)) {
 				String processedString = tokenString;
-				if (type.equals(TokenType.STRING)) {
-					processedString = tokenString.substring(1,
-							tokenString.length() - 1);
-				}
 				if (!symbolTable.contains(processedString)) {
 					value = symbolTable.put(processedString);
 				} else {
@@ -225,8 +208,6 @@ public class LexicalAnalyserImpl implements LexicalAnalyser {
 			case 10 :
 			case 12 :
 				return TokenType.OTHER;
-			case 16 :
-				return TokenType.STRING;
 		}
 		throw new RuntimeException("Erro na classificação do token.");
 	}

@@ -5,11 +5,9 @@ package compilador.lexico;
  * 
  */
 public enum TokenType {
-	NUMERIC, IDENTIFIER, GREATER_OR_EQUALS, LESS_OR_EQUALS, EQUALS, DIFFERENT, OTHER, STRING, KW_BREAK(
-			"break"), KW_CHAR("char"), KW_CONST("const"), KW_DOUBLE("double"), KW_ELSE(
-			"else"), KW_FLOAT("float"), KW_WHILE("while"), KW_IF("if"), KW_INT(
-			"int"), KW_LONG("long"), KW_RETURN("return"), KW_STATIC("static"), KW_VOID(
-			"void");
+	NUMERIC, IDENTIFIER, GREATER_OR_EQUALS, LESS_OR_EQUALS, EQUALS, DIFFERENT, OTHER, KW_ELSE(
+			"else"), KW_WHILE("while"), KW_IF("if"), KW_INT("int"), KW_RETURN(
+			"return"), KW_VOID("void");
 
 	private boolean isKeyword;
 	private String keyword;
@@ -22,7 +20,7 @@ public enum TokenType {
 		isKeyword = true;
 		this.keyword = keyword;
 	}
-	
+
 	/**
 	 * 
 	 * @return <code> true </code> caso seja uma palavra reservada e
