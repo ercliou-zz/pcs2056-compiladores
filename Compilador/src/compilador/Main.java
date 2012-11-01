@@ -2,10 +2,11 @@ package compilador;
 
 import java.io.IOException;
 
-import compilador.lexico.LexicalAnalyser;
-import compilador.lexico.LexicalAnalyserImpl;
-import compilador.lexico.LexicalResult;
-import compilador.lexico.SymbolTable;
+import compiler.SymbolTable;
+import compiler.lexical.LexicalAnalyser;
+import compiler.lexical.LexicalAnalyserImpl;
+import compiler.lexical.LexicalResult;
+
 
 public class Main {
 	
