@@ -131,7 +131,7 @@ public class LexicalAnalyserImpl implements LexicalAnalyser {
 		}
 		return null;
 	}
-
+	
 	/*
 	 * Classifica o token a partir da cadeia de caracteres lidos e o último
 	 * estado do automato antes de terminar a execução

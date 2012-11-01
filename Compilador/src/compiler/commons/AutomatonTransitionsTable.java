@@ -1,6 +1,7 @@
 package compiler.commons;
 
 import java.util.Hashtable;
+import java.util.Set;
 
 public class AutomatonTransitionsTable<C> {
 	protected Hashtable<Integer, Hashtable<C, Integer>> table;
@@ -22,6 +23,10 @@ public class AutomatonTransitionsTable<C> {
 			return secondaryTable.get(consumable);
 		}
 		return null;
+	}
+	
+	public Set<C> getPossibleConsumables(Integer state){
+		return table.get(state).keySet();
 	}
 
 }
