@@ -110,7 +110,7 @@ public class LexicalAnalyserImpl implements LexicalAnalyser {
 		TokenType type = classify(automaton.getActualState(), tokenString);
 		Integer value = null;
 		if (type != null) {
-			if (type.equals(TokenType.IDENTIFIER)) {
+			if (type.equals(TokenType.HUMBLE_IDENTIFIER)) {
 				String processedString = tokenString;
 				if (!symbolTable.contains(processedString)) {
 					value = symbolTable.put(processedString);
@@ -148,7 +148,7 @@ public class LexicalAnalyserImpl implements LexicalAnalyser {
 				if (TokenType.isKeyword(tokenString)) {
 					return TokenType.getKeywordEnum(tokenString);
 				}
-				return TokenType.IDENTIFIER;
+				return TokenType.HUMBLE_IDENTIFIER;
 			case 5 :
 				return TokenType.GREATER_OR_EQUALS;
 			case 7 :

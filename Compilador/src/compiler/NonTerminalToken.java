@@ -16,10 +16,10 @@ public class NonTerminalToken extends Token{
 	}
 	
 	public static NonTerminalToken ProgramToken(){
-		return new NonTerminalToken(NonTerminalTokenType.PROGRAMA);
+		return new NonTerminalToken(NonTerminalTokenType.PROGRAM);
 	}
 	public static NonTerminalToken FunctionToken(){
-		return new NonTerminalToken(NonTerminalTokenType.FUNCAO);
+		return new NonTerminalToken(NonTerminalTokenType.FUNCTION);
 	}
 
 	@Override

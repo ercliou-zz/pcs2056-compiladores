@@ -1,5 +1,5 @@
 package compiler.syntax;
 
 public enum NonTerminalTokenType {
-	PROGRAMA, FUNCAO, 
+	PROGRAM, FUNCTION, BLOCK, COMMAND, EXPRESSION, ARITHM_EXP, LOGICAL_EXP, IDENTIFIER;
 }
