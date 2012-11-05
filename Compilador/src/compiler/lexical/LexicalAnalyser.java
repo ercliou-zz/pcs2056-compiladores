@@ -1,6 +1,5 @@
 package compiler.lexical;
 
-import compiler.SymbolTable;
 
 /**
  * Analisador léxico
@@ -13,9 +12,6 @@ public interface LexicalAnalyser {
 	 * de onde o texto deve ser processado, preenchendo a tabela de símbolos
 	 * passada com os identificadores e strings encontradas
 	 * 
-	 * @param symbolTable
-	 *            Tabela de símbolos onde serão mapeados os identificadores e
-	 *            strings encontrados
 	 * @param sourceText
 	 *            Texto fonte que será analisado
 	 * @param cursor
@@ -23,6 +19,5 @@ public interface LexicalAnalyser {
 	 * @return Um token, contendo um tipo e uma informação sobre o token, e uma
 	 *         posição indicando até onde o texto fonte foi analisado
 	 */
-	public LexicalResult analyse(SymbolTable symbolTable, String sourceText,
-			int cursor);
+	public LexicalResult analyse(String sourceText, int cursor);
 }

@@ -62,7 +62,7 @@ public class Automaton<C> {
 		return transitions.get(state, consumable) != null;
 	}
 	
-	public Set<C> getPossibleTransitions(int state){
+	public Set<C> getPossibleTransitions(){
 		return transitions.getPossibleConsumables(state);
 	}
 }

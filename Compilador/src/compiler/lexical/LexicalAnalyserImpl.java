@@ -14,14 +14,13 @@ import compiler.TokenType;
 public class LexicalAnalyserImpl implements LexicalAnalyser {
 
 	private LexicalAutomaton automaton;
-
+	
 	/**
 	 * Construtor padrão, instancia o automato que faz a análise léxica de nossa
 	 * linguagem
 	 */
 	public LexicalAnalyserImpl() {
-		LexicalAutomatonTransitionsTable transitions = new LexicalAutomatonTransitionsTable(
-				15);
+		LexicalAutomatonTransitionsTable transitions = new LexicalAutomatonTransitionsTable(15);
 
 		// ESTADO 1 (estado inicial)
 		transitions.put(1, "[\r\n \t]", 1);
@@ -78,8 +77,7 @@ public class LexicalAnalyserImpl implements LexicalAnalyser {
 		ignoredStates.add(12);
 		ignoredStates.add(13);
 
-		automaton = new LexicalAutomaton(transitions, 15, 1, finalStates,
-				ignoredStates);
+		automaton = new LexicalAutomaton(transitions, 15, 1, finalStates, ignoredStates);
 	}
 
 	/*
@@ -89,8 +87,7 @@ public class LexicalAnalyserImpl implements LexicalAnalyser {
 	 * compilador.lexico.LexicalAnalyser#analyse(compilador.lexico.SymbolTable,
 	 * java.lang.String, int)
 	 */
-	public LexicalResult analyse(SymbolTable symbolTable, String sourceText,
-			int cursor) {
+	public LexicalResult analyse(String sourceText, int cursor) {
 
 		// inicialização
 		automaton.resetAutomaton();
@@ -112,10 +109,10 @@ public class LexicalAnalyserImpl implements LexicalAnalyser {
 		if (type != null) {
 			if (type.equals(TokenType.HUMBLE_IDENTIFIER)) {
 				String processedString = tokenString;
-				if (!symbolTable.contains(processedString)) {
-					value = symbolTable.put(processedString);
+				if (!SymbolTable.getInstance().contains(processedString)) {
+					value = SymbolTable.getInstance().put(processedString);
 				} else {
-					value = symbolTable.get(processedString);
+					value = SymbolTable.getInstance().get(processedString);
 				}
 			} else if (type.equals(TokenType.NUMERIC)) {
 				value = Integer.parseInt(tokenString);
@@ -131,7 +128,7 @@ public class LexicalAnalyserImpl implements LexicalAnalyser {
 		}
 		return null;
 	}
-	
+
 	/*
 	 * Classifica o token a partir da cadeia de caracteres lidos e o último
 	 * estado do automato antes de terminar a execução
@@ -140,30 +137,30 @@ public class LexicalAnalyserImpl implements LexicalAnalyser {
 		// System.out.println("Classifying: Last State=" + lastState
 		// + " Token String=" + tokenString);
 		switch (lastState) {
-			case 1 :
-				return null;
-			case 2 :
-				return TokenType.NUMERIC;
-			case 3 :
-				if (TokenType.isKeyword(tokenString)) {
-					return TokenType.getKeywordEnum(tokenString);
-				}
-				return TokenType.HUMBLE_IDENTIFIER;
-			case 5 :
-				return TokenType.GREATER_OR_EQUALS;
-			case 7 :
-				return TokenType.LESS_OR_EQUALS;
-			case 9 :
-				return TokenType.EQUALS;
-			case 11 :
-				return TokenType.DIFFERENT;
-			case 14 :
-			case 4 :
-			case 6 :
-			case 8 :
-			case 10 :
-			case 12 :
-				return TokenType.OTHER;
+		case 1:
+			return null;
+		case 2:
+			return TokenType.NUMERIC;
+		case 3:
+			if (TokenType.isKeyword(tokenString)) {
+				return TokenType.getKeywordEnum(tokenString);
+			}
+			return TokenType.HUMBLE_IDENTIFIER;
+		case 5:
+			return TokenType.GREATER_OR_EQUALS;
+		case 7:
+			return TokenType.LESS_OR_EQUALS;
+		case 9:
+			return TokenType.EQUALS;
+		case 11:
+			return TokenType.DIFFERENT;
+		case 14:
+		case 4:
+		case 6:
+		case 8:
+		case 10:
+		case 12:
+			return TokenType.OTHER;
 		}
 		throw new RuntimeException("Erro na classificação do token.");
 	}
