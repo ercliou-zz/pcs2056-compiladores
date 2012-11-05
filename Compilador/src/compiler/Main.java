@@ -17,7 +17,6 @@ public class Main {
 	 */
 	public static void main(String[] args) throws IOException {
 
-		SymbolTable st = new SymbolTable();
 		LexicalAnalyser la = new LexicalAnalyserImpl();
 
 		LexicalResult r = LexicalResult.startResult();
@@ -30,11 +29,11 @@ public class Main {
 			}
 			// Chamada do analisador léxico, recuperando um token e a posição
 			// até onde o texto fonte foi lido
-			r = la.analyse(st, sourceText, r.getCursor());
+			r = la.analyse(sourceText, r.getCursor());
 		}
 
 		// Imprimindo a tabela de símbolos
-		System.out.println("\n" + st);
+		System.out.println("\n" + SymbolTable.getInstance());
 
 	}
 }

@@ -43,6 +43,11 @@ public class NonTerminalToken extends Token{
 			return false;
 		return true;
 	}
+	
+	@Override
+	public String toString(){
+		return "[ " + automatonId + " ]";
+	}
 
 //	public static NonTerminalToken ProgramToken() {
 //		return new NonTerminalToken(NonTerminalTokenType.PROGRAMA);

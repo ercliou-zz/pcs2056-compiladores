@@ -10,11 +10,21 @@ import java.util.List;
  */
 public class SymbolTable {
 
+	private static SymbolTable INSTANCE;
+	
 	private List<String> table;
 
-	public SymbolTable() {
+	private SymbolTable() {
 		table = new ArrayList<String>();
 	}
+	
+	public static SymbolTable getInstance(){
+		if(INSTANCE == null){
+			INSTANCE = new SymbolTable();
+		}
+		return INSTANCE;
+	}
+	
 	public Integer get(String key) {
 		return table.indexOf(key);
 	}
