@@ -5,10 +5,9 @@ package compiler;
  * 
  */
 public enum TokenType {
-	NUMERIC, HUMBLE_IDENTIFIER, GREATER_OR_EQUALS, LESS_OR_EQUALS, EQUALS, DIFFERENT, OTHER, KW_ELSE(
-			"else"), KW_WHILE("while"), KW_IF("if"), KW_INT("int"), KW_RETURN(
-			"return"), KW_VOID("void"), KW_AND("AND"), KW_OR("OR"), KW_MAIN(
-			"main"), KW_READ("read"), KW_WRITE("write"), KW_TRUE("TRUE"), KW_FALSE("FALSE");
+	NUMERIC, HUMBLE_IDENTIFIER, GREATER_OR_EQUALS, LESS_OR_EQUALS, EQUALS, DIFFERENT, OTHER, KW_ELSE("else"), KW_WHILE("while"), KW_IF("if"), KW_INT("int"), KW_RETURN(
+			"return"), KW_VOID("void"), KW_AND("AND"), KW_OR("OR"), KW_MAIN("main"), KW_READ("read"), KW_BOOL("bool"), KW_WRITE("write"), KW_TRUE("TRUE"), KW_FALSE(
+			"FALSE");
 
 	private boolean isKeyword;
 	private String keyword;

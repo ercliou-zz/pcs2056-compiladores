@@ -15,13 +15,6 @@ public class NonTerminalToken extends Token{
 		return automatonId;
 	}
 	
-	public static NonTerminalToken ProgramToken(){
-		return new NonTerminalToken(NonTerminalTokenType.PROGRAM);
-	}
-	public static NonTerminalToken FunctionToken(){
-		return new NonTerminalToken(NonTerminalTokenType.FUNCTION);
-	}
-
 	@Override
 	public int hashCode() {
 		final int prime = 31;
