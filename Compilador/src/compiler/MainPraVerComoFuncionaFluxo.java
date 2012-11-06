@@ -2,10 +2,6 @@ package compiler;
 
 import java.io.IOException;
 
-import compiler.commons.FileExtractor;
-import compiler.lexical.LexicalAnalyser;
-import compiler.lexical.LexicalAnalyserImpl;
-import compiler.lexical.LexicalResult;
 import compiler.syntax.SyntaxAnalyserImpl;
 
 

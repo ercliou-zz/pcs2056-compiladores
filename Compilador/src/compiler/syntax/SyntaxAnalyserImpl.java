@@ -31,7 +31,7 @@ public class SyntaxAnalyserImpl {
 			transitionTable.put(0, new Token(null, TokenType.KW_INT), 1);
 			transitionTable.put(0, new Token(null, TokenType.KW_BOOL), 1);
 			transitionTable.put(1, new Token(null, TokenType.HUMBLE_IDENTIFIER), 2);
-			transitionTable.put(2, new Token((int) '(', TokenType.OTHER), 1);
+			transitionTable.put(2, new Token((int) '(', TokenType.OTHER), 3);
 			transitionTable.put(3, new Token(null, TokenType.KW_VOID), 4);
 			transitionTable.put(3, new Token(null, TokenType.KW_INT), 4);
 			transitionTable.put(3, new Token(null, TokenType.KW_BOOL), 4);

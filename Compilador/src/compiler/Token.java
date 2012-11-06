@@ -32,7 +32,6 @@ public class Token {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((type == null) ? 0 : type.hashCode());
-		result = prime * result + ((value == null) ? 0 : value.hashCode());
 		return result;
 	}
 
@@ -47,14 +46,14 @@ public class Token {
 		Token other = (Token) obj;
 		if (type != other.type)
 			return false;
-		if (value == null) {
-			if (other.value != null)
+		if (other.type == TokenType.OTHER) {
+			if (value == null) {
+				if (other.value != null)
+					return false;
+			} else if (!value.equals(other.value))
 				return false;
-		} else if (!value.equals(other.value))
-			return false;
+		}
 		return true;
 	}
-	
-	
 
 }

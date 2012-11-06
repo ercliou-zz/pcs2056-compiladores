@@ -38,8 +38,8 @@ public class Automaton<C> {
 	}
 
 	public void step() {
-		C stringAtom = string.remove();
 		if (!isStringEmpty()) {
+			C stringAtom = string.remove();
 			state = transitions.get(state, stringAtom);
 		} else {
 			throw new RuntimeException("Uma tentativa de passo do automato falhou pois a cadeia está vazia.");
@@ -58,7 +58,7 @@ public class Automaton<C> {
 		state = initialState;
 	}
 
-	public boolean hasTransition(int state, C consumable) {
+	public boolean hasTransition(C consumable) {
 		return transitions.get(state, consumable) != null;
 	}
 	

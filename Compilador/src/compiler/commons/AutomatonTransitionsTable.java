@@ -19,7 +19,7 @@ public class AutomatonTransitionsTable<C> {
 	
 	public Integer get(Integer state, C consumable){
 		Hashtable<C,Integer> secondaryTable = table.get(state);
-		if(secondaryTable != null){
+		if(secondaryTable != null && consumable != null){
 			return secondaryTable.get(consumable);
 		}
 		return null;

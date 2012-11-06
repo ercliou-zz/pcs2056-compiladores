@@ -1,6 +1,7 @@
 package compiler.syntax;
 
 import java.util.Map;
+import java.util.Set;
 import java.util.Stack;
 
 import compiler.NonTerminalToken;
@@ -22,52 +23,34 @@ public class SyntaxAutomaton {
 	private Map<NonTerminalToken, Automaton<Token>> automatons;
 
 	public SyntaxAutomaton(Map<NonTerminalToken, Automaton<Token>> automatons, NonTerminalToken initialAutomaton) {
+		this.automatons = automatons;
 		currentAutomaton = automatons.get(initialAutomaton);
 		currentAutomaton.resetAutomaton();
 		stack = new Stack<Automaton<Token>>();
 	}
 
-	public void push(Automaton<Token> nextAutomaton) {
-		stack.push(currentAutomaton);
-		currentAutomaton = nextAutomaton;
-	}
-
-	public void pop() {
-		if (currentAutomaton.isComplete()) {
-			currentAutomaton = stack.pop();
-		}
-	}
-
 	public void step(SymbolTable symbolTable) {
-		if (currentAutomaton.hasTransition(currentAutomaton.getActualState(), currentToken)) {
+		System.out.println("Submáquina: " + currentAutomaton + " Estado: " + currentAutomaton.getActualState() + " Token: " + currentToken);
+		if (currentAutomaton.hasTransition(currentToken)) {
 			currentAutomaton.setString(currentToken);
 			currentAutomaton.step();
-			consumeToken(symbolTable);
+			consumeToken();
 		} else {
-			boolean foundValidState = false;
-			for (Token token : currentAutomaton.getPossibleTransitions(currentAutomaton.getActualState())) {
-				if (token.getClass().isAssignableFrom(NonTerminalToken.class)) {
-					if (automatons.get(token).hasTransition(currentAutomaton.getActualState(), currentToken)) {
-						currentAutomaton.setString(token);
-						currentAutomaton.step();
-						push(currentAutomaton);
-						currentAutomaton = automatons.get(token);
-						foundValidState = true;
-					}
-				}
-			}
-			if (!foundValidState) {
-				throw new RuntimeException("Token não reconhecido no automato.");
-			}
+			NonTerminalToken nextMachine = getUniqueNonTerminal(currentAutomaton.getPossibleTransitions());
+			currentAutomaton.setString(nextMachine);
+			currentAutomaton.step();
+			stack.push(currentAutomaton);
+			currentAutomaton = automatons.get(nextMachine);
 		}
 	}
 
-	public void setSourceText(String sourceText) {
+	public void initialize(String sourceText) {
 		this.sourceText = sourceText;
+		consumeToken();
 	}
 
-	private void consumeToken(SymbolTable symbolTable) {
-		LexicalResult result = lexicalAnalyser.analyse(symbolTable, sourceText, lexCursor);
+	private void consumeToken() {
+		LexicalResult result = lexicalAnalyser.analyse(sourceText, lexCursor);
 		if (result != null) {
 			lexCursor = result.getCursor();
 			currentToken = result.getToken();
@@ -76,11 +59,28 @@ public class SyntaxAutomaton {
 		}
 	}
 
-	private Token peekNextToken(SymbolTable symbolTable) {
-		LexicalResult result = lexicalAnalyser.analyse(symbolTable, sourceText, lexCursor);
+	@SuppressWarnings("unused")
+	private Token peekNextToken() {
+		LexicalResult result = lexicalAnalyser.analyse(sourceText, lexCursor);
 		if (result != null) {
 			return result.getToken();
 		}
 		return null;
 	}
+
+	private NonTerminalToken getUniqueNonTerminal(Set<Token> tokens) {
+		NonTerminalToken ntt = null;
+		for (Token token : tokens) {
+			if (NonTerminalToken.class.isAssignableFrom(token.getClass())) {
+				if (ntt != null) {
+					// Nao deveria ser excecao, e sim decidir qual expandir
+					// fazendo o look ahead
+					throw new RuntimeException("Duas transilções com não terminal.");
+				}
+				ntt = (NonTerminalToken) token;
+			}
+		}
+		return ntt;
+	}
+
 }
