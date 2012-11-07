@@ -37,10 +37,17 @@ public class SyntaxAutomaton {
 			consumeToken();
 		} else {
 			NonTerminalToken nextMachine = getUniqueNonTerminal(currentAutomaton.getPossibleTransitions());
-			currentAutomaton.setString(nextMachine);
-			currentAutomaton.step();
-			stack.push(currentAutomaton);
-			currentAutomaton = automatons.get(nextMachine);
+			if(nextMachine != null){
+				currentAutomaton.setString(nextMachine);
+				currentAutomaton.step();
+				stack.push(currentAutomaton);
+				currentAutomaton = automatons.get(nextMachine);
+			} else {
+				if(currentAutomaton.isComplete() && stack.peek() != null){
+					currentAutomaton = stack.pop();
+				}
+			}
+			
 		}
 	}
 
