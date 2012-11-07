@@ -2,6 +2,7 @@ package compiler;
 
 import java.io.IOException;
 
+import compiler.commons.SymbolTable;
 import compiler.syntax.SyntaxAnalyserImpl;
 
 public class MainSyntax {

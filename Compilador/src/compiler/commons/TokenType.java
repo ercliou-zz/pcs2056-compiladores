@@ -1,4 +1,4 @@
-package compiler;
+package compiler.commons;
 
 /**
  * Enumeração dos possíveis tipos de tokens da nossa linguagem

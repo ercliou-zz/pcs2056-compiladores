@@ -1,6 +1,6 @@
 package compiler.lexical;
 
-import compiler.Token;
+import compiler.commons.Token;
 
 /**
  * Classe que representa o resultado de uma análise léxica segundo nossa

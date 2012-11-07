@@ -1,4 +1,4 @@
-package compiler;
+package compiler.commons;
 
 /**
  * Classe que representa um token, contendo seu tipo e o valor, que contém

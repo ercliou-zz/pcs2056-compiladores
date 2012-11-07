@@ -6,12 +6,12 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import compiler.NonTerminalToken;
-import compiler.SymbolTable;
-import compiler.Token;
-import compiler.TokenType;
 import compiler.commons.AutomatonTransitionsTable;
 import compiler.commons.FileExtractor;
+import compiler.commons.NonTerminalToken;
+import compiler.commons.SymbolTable;
+import compiler.commons.Token;
+import compiler.commons.TokenType;
 
 public class SyntaxAnalyserImpl {
 

@@ -3,9 +3,9 @@ package compiler.lexical;
 import java.util.HashSet;
 import java.util.Set;
 
-import compiler.SymbolTable;
-import compiler.Token;
-import compiler.TokenType;
+import compiler.commons.SymbolTable;
+import compiler.commons.Token;
+import compiler.commons.TokenType;
 
 /**
  * Implementação do analisador léxico

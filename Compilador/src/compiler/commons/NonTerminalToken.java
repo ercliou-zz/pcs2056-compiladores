@@ -1,4 +1,4 @@
-package compiler;
+package compiler.commons;
 
 import compiler.syntax.NonTerminalTokenType;
 
@@ -42,21 +42,4 @@ public class NonTerminalToken extends Token{
 		return "[ " + automatonId + " ]";
 	}
 
-//	public static NonTerminalToken ProgramToken() {
-//		return new NonTerminalToken(NonTerminalTokenType.PROGRAMA);
-//	}
-//
-//	public static NonTerminalToken ProgramToken() {
-//		return new NonTerminalToken(NonTerminalTokenType.PROGRAMA);
-//	}
-//
-//	public static NonTerminalToken ProgramToken() {
-//		return new NonTerminalToken(NonTerminalTokenType.PROGRAMA);
-//	}
-//
-//	public static NonTerminalToken ProgramToken() {
-//		return new NonTerminalToken(NonTerminalTokenType.PROGRAMA);
-//	}
-	
-	
 }

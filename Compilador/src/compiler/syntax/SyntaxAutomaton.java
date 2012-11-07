@@ -2,9 +2,9 @@ package compiler.syntax;
 
 import java.util.Set;
 
-import compiler.Token;
 import compiler.commons.Automaton;
 import compiler.commons.AutomatonTransitionsTable;
+import compiler.commons.Token;
 
 public class SyntaxAutomaton extends Automaton<Token>{
 

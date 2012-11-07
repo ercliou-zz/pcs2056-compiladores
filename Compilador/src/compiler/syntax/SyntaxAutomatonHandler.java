@@ -4,10 +4,10 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Stack;
 
-import compiler.NonTerminalToken;
-import compiler.SymbolTable;
-import compiler.Token;
-import compiler.TokenType;
+import compiler.commons.NonTerminalToken;
+import compiler.commons.SymbolTable;
+import compiler.commons.Token;
+import compiler.commons.TokenType;
 import compiler.lexical.LexicalAnalyser;
 import compiler.lexical.LexicalAnalyserImpl;
 import compiler.lexical.LexicalResult;

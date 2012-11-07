@@ -1,4 +1,4 @@
-package compiler;
+package compiler.commons;
 
 import java.util.ArrayList;
 import java.util.List;
