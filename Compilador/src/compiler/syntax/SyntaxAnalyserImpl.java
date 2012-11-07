@@ -15,7 +15,7 @@ import compiler.commons.FileExtractor;
 
 public class SyntaxAnalyserImpl {
 
-	SyntaxAutomatonHandler syntaxAutomaton;
+	SyntaxAutomatonHandler syntaxAutomatonHandler;
 	SymbolTable st = SymbolTable.getInstance();
 
 	public SyntaxAnalyserImpl() {
@@ -29,13 +29,13 @@ public class SyntaxAnalyserImpl {
 			transitionTable.put(0, new Token(null, TokenType.KW_VOID), 1);
 			transitionTable.put(0, new Token(null, TokenType.KW_INT), 1);
 			transitionTable.put(0, new Token(null, TokenType.KW_BOOL), 1);
-			transitionTable.put(1, new Token(null, TokenType.HUMBLE_IDENTIFIER), 2);
+			transitionTable.put(1, new Token(null, TokenType.IDENTIFIER), 2);
 			transitionTable.put(2, new Token((int) '(', TokenType.OTHER), 3);
 			transitionTable.put(3, new Token(null, TokenType.KW_VOID), 4);
 			transitionTable.put(3, new Token(null, TokenType.KW_INT), 4);
 			transitionTable.put(3, new Token(null, TokenType.KW_BOOL), 4);
 			transitionTable.put(3, new Token((int) ')', TokenType.OTHER), 5);
-			transitionTable.put(4, new Token(null, TokenType.HUMBLE_IDENTIFIER), 6);
+			transitionTable.put(4, new Token(null, TokenType.IDENTIFIER), 6);
 			transitionTable.put(5, new Token((int) '{', TokenType.OTHER), 7);
 			transitionTable.put(6, new Token((int) ',', TokenType.OTHER), 8);
 			transitionTable.put(6, new Token((int) ')', TokenType.OTHER), 5);
@@ -47,7 +47,7 @@ public class SyntaxAnalyserImpl {
 			transitionTable.put(8, new Token(null, TokenType.KW_VOID), 4);
 			transitionTable.put(8, new Token(null, TokenType.KW_INT), 4);
 			transitionTable.put(8, new Token(null, TokenType.KW_BOOL), 4);
-			transitionTable.put(9, new Token(null, TokenType.HUMBLE_IDENTIFIER), 12);
+			transitionTable.put(9, new Token(null, TokenType.IDENTIFIER), 12);
 			transitionTable.put(10, new NonTerminalToken(NonTerminalTokenType.COMMAND), 10);
 			transitionTable.put(10, new Token((int) '}', TokenType.OTHER), 11);
 			transitionTable.put(11, new Token(null, TokenType.KW_VOID), 1);
@@ -67,7 +67,7 @@ public class SyntaxAnalyserImpl {
 
 		{
 			AutomatonTransitionsTable<Token> transitionTable = new AutomatonTransitionsTable<Token>(37);
-			transitionTable.put(0, new Token(null, TokenType.HUMBLE_IDENTIFIER), 1);
+			transitionTable.put(0, new Token(null, TokenType.IDENTIFIER), 1);
 			transitionTable.put(0, new Token(null, TokenType.KW_IF), 2);
 			transitionTable.put(0, new Token(null, TokenType.KW_WHILE), 3);
 			transitionTable.put(0, new Token(null, TokenType.KW_READ), 4);
@@ -88,7 +88,7 @@ public class SyntaxAnalyserImpl {
 			transitionTable.put(6, new Token((int) '}', TokenType.OTHER), 13);
 			transitionTable.put(7, new NonTerminalToken(NonTerminalTokenType.EXPRESSION), 11);
 			transitionTable.put(8, new NonTerminalToken(NonTerminalTokenType.EXPRESSION), 24);
-			transitionTable.put(9, new Token(null, TokenType.HUMBLE_IDENTIFIER), 19);
+			transitionTable.put(9, new Token(null, TokenType.IDENTIFIER), 19);
 			transitionTable.put(9, new NonTerminalToken(NonTerminalTokenType.EXPRESSION), 11);
 			transitionTable.put(10, new NonTerminalToken(NonTerminalTokenType.EXPRESSION), 12);
 			transitionTable.put(10, new Token((int) ')', TokenType.OTHER), 11);
@@ -97,7 +97,7 @@ public class SyntaxAnalyserImpl {
 			transitionTable.put(12, new Token((int) ',', TokenType.OTHER), 16);
 			transitionTable.put(14, new NonTerminalToken(NonTerminalTokenType.COMMAND), 14);
 			transitionTable.put(14, new Token((int) '}', TokenType.OTHER), 13);
-			transitionTable.put(15, new Token(null, TokenType.HUMBLE_IDENTIFIER), 17);
+			transitionTable.put(15, new Token(null, TokenType.IDENTIFIER), 17);
 			transitionTable.put(16, new NonTerminalToken(NonTerminalTokenType.EXPRESSION), 12);
 			transitionTable.put(17, new Token((int) '[', TokenType.OTHER), 18);
 			transitionTable.put(17, new Token((int) ';', TokenType.OTHER), 6);
@@ -110,7 +110,7 @@ public class SyntaxAnalyserImpl {
 			transitionTable.put(24, new Token((int) ']', TokenType.OTHER), 25);
 			transitionTable.put(25, new Token((int) '=', TokenType.OTHER), 9);
 			transitionTable.put(26, new NonTerminalToken(NonTerminalTokenType.EXPRESSION), 28);
-			transitionTable.put(27, new Token(null, TokenType.HUMBLE_IDENTIFIER), 29);
+			transitionTable.put(27, new Token(null, TokenType.IDENTIFIER), 29);
 			transitionTable.put(28, new Token((int) ')', TokenType.OTHER), 30);
 			transitionTable.put(28, new Token((int) '>', TokenType.OTHER), 26);
 			transitionTable.put(28, new Token((int) '<', TokenType.OTHER), 26);
@@ -145,7 +145,7 @@ public class SyntaxAnalyserImpl {
 			AutomatonTransitionsTable<Token> transitionTable = new AutomatonTransitionsTable<Token>(8);
 			transitionTable.put(0, new Token(null, TokenType.NUMERIC), 1);
 			transitionTable.put(0, new Token((int) '!', TokenType.OTHER), 2);
-			transitionTable.put(0, new Token(null, TokenType.HUMBLE_IDENTIFIER), 3);
+			transitionTable.put(0, new Token(null, TokenType.IDENTIFIER), 3);
 			transitionTable.put(0, new Token((int) '(', TokenType.OTHER), 4);
 			transitionTable.put(0, new Token(null, TokenType.KW_TRUE), 1);
 			transitionTable.put(0, new Token(null, TokenType.KW_FALSE), 1);
@@ -156,7 +156,7 @@ public class SyntaxAnalyserImpl {
 			transitionTable.put(1, new Token((int) '-', TokenType.OTHER), 0);
 			transitionTable.put(1, new Token(null, TokenType.KW_OR), 0);
 			transitionTable.put(2, new Token((int) '!', TokenType.OTHER), 2);
-			transitionTable.put(2, new Token(null, TokenType.HUMBLE_IDENTIFIER), 3);
+			transitionTable.put(2, new Token(null, TokenType.IDENTIFIER), 3);
 			transitionTable.put(2, new Token((int) '(', TokenType.OTHER), 4);
 			transitionTable.put(3, new Token((int) '[', TokenType.OTHER), 6);
 			transitionTable.put(3, new Token((int) '*', TokenType.OTHER), 0);
@@ -182,13 +182,14 @@ public class SyntaxAnalyserImpl {
 		automatons.put(new NonTerminalToken(NonTerminalTokenType.COMMAND), commandAutomaton);
 		automatons.put(new NonTerminalToken(NonTerminalTokenType.EXPRESSION), expressionAutomaton);
 
-		syntaxAutomaton = new SyntaxAutomatonHandler(automatons, new NonTerminalToken(NonTerminalTokenType.PROGRAM));
+		syntaxAutomatonHandler = new SyntaxAutomatonHandler(automatons, new NonTerminalToken(NonTerminalTokenType.PROGRAM));
 	}
 
 	public void compile(String filePath) throws IOException {
-		syntaxAutomaton.initialize(FileExtractor.extract(filePath));
-		while (true) {
-			syntaxAutomaton.step(st);
+		syntaxAutomatonHandler.initialize(FileExtractor.extract(filePath));
+		while (!syntaxAutomatonHandler.isComplete()) {
+			syntaxAutomatonHandler.step(st);
 		}
+		System.out.println("Compilação finalizada com sucesso!");
 	}
 }

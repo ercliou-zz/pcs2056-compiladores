@@ -24,7 +24,10 @@ public class Token {
 
 	@Override
 	public String toString() {
-		return "[" + type + ( type == TokenType.NUMERIC || type == TokenType.HUMBLE_IDENTIFIER ? " " + value : (type == TokenType.OTHER ? " " + ((char) value.intValue()) : "") ) + "]";
+		return "["
+				+ type
+				+ (type == TokenType.NUMERIC || type == TokenType.IDENTIFIER ? " " + value : (type == TokenType.OTHER ? " " + "'"
+						+ ((char) value.intValue()) + "'" : "")) + "]";
 	}
 
 	@Override

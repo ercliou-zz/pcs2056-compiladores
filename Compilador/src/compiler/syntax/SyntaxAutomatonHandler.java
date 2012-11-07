@@ -30,7 +30,7 @@ public class SyntaxAutomatonHandler {
 	}
 
 	public void step(SymbolTable symbolTable) {
-		System.out.println("Submáquina: " + currentAutomaton + " Estado: " + currentAutomaton.getActualState() + " Token: " + currentToken);
+		System.out.println("Submáquina: " + currentAutomaton +"\tEstado: " + currentAutomaton.getActualState() + "\tToken:\t" + currentToken);
 
 		Token nextPath = null;
 
@@ -40,6 +40,8 @@ public class SyntaxAutomatonHandler {
 			if (currentAutomaton.isComplete() && stack.peek() != null) {
 				currentAutomaton = stack.pop();
 				System.out.println("POP\t" + printStack());
+			} else {
+				throw new RuntimeException("Token não esperado: " + currentToken);
 			}
 		} else {
 			step(nextPath);
@@ -55,6 +57,10 @@ public class SyntaxAutomatonHandler {
 	public void initialize(String sourceText) {
 		this.sourceText = sourceText;
 		consumeToken();
+	}
+
+	public boolean isComplete() {
+		return (currentAutomaton.isComplete() && currentToken == null && stack.isEmpty());
 	}
 
 	private void consumeToken() {
@@ -97,7 +103,7 @@ public class SyntaxAutomatonHandler {
 			Token nextToken = peekNextToken();
 			if (nextToken.getType() == TokenType.OTHER && nextToken.getValue() == '(') {
 				for (Token token : possibleTransitions) {
-					if (token.getType() == TokenType.HUMBLE_IDENTIFIER) {
+					if (token.getType() == TokenType.IDENTIFIER) {
 						return token;
 					}
 				}
@@ -116,6 +122,9 @@ public class SyntaxAutomatonHandler {
 	private void step(Token token) {
 		currentAutomaton.setString(token);
 		currentAutomaton.step();
+		if (currentAutomaton.getSemanticActionId() != null) {
+			semantico_tbd(currentAutomaton.getSemanticActionId());
+		}
 		if (!NonTerminalToken.class.isAssignableFrom(token.getClass())) {
 			consumeToken();
 		}
@@ -125,10 +134,13 @@ public class SyntaxAutomatonHandler {
 	private String printStack() {
 		String result = "";
 		Stack<SyntaxAutomaton> other = (Stack<SyntaxAutomaton>) stack.clone();
-		while(!other.isEmpty()){
+		while (!other.isEmpty()) {
 			result += other.pop() + " ";
 		}
 		return result;
 	}
 
+	private void semantico_tbd(int semanticActionId) {
+		System.out.println("Ação semântica chamada: " + semanticActionId);
+	}
 }

@@ -19,6 +19,13 @@ public class SyntaxAutomaton extends Automaton<Token>{
 		return false;
 	}
 	
+	public Integer getSemanticActionId(){
+		if(SyntaxState.class.isAssignableFrom(state.getClass())){
+			return ((SyntaxState) state).getSemanticActionId();
+		}
+		return null;
+	}
+	
 	public SyntaxAutomaton clone() {
 		SyntaxAutomaton aut = new SyntaxAutomaton(transitions, statesQuantity, initialState.getState(), finalStates);
 		aut.setName(name);

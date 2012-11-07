@@ -6,12 +6,12 @@ public class SyntaxState implements State{
 
 	private Integer state;
 	private boolean lookAhead;
-	private Integer semanticAction;
+	private Integer semanticActionId;
 	
-	public SyntaxState(Integer state, boolean lookAhead, Integer semanticAction) {
+	public SyntaxState(Integer state, boolean lookAhead, Integer semanticActionId) {
 		this.state = state;
 		this.lookAhead = lookAhead;
-		this.semanticAction = semanticAction;
+		this.semanticActionId = semanticActionId;
 	}
 
 	@Override
@@ -23,8 +23,8 @@ public class SyntaxState implements State{
 		return lookAhead;
 	}
 
-	public int getSemanticAction() {
-		return semanticAction;
+	public int getSemanticActionId() {
+		return semanticActionId;
 	}
 	
 	
