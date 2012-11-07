@@ -146,7 +146,7 @@ public class SyntaxAnalyserImpl {
 			transitionTable.put(1, new Token((int) '+', TokenType.OTHER), 0);
 			transitionTable.put(1, new Token((int) '-', TokenType.OTHER), 0);
 			transitionTable.put(1, new Token(null, TokenType.KW_OR), 0);
-			transitionTable.put(1, new Token((int) '!', TokenType.OTHER), 2);
+			transitionTable.put(2, new Token((int) '!', TokenType.OTHER), 2);
 			transitionTable.put(2, new Token(null, TokenType.HUMBLE_IDENTIFIER), 3);
 			transitionTable.put(2, new Token((int) '(', TokenType.OTHER), 4);
 			transitionTable.put(3, new Token((int) '[', TokenType.OTHER), 6);
@@ -156,7 +156,7 @@ public class SyntaxAnalyserImpl {
 			transitionTable.put(3, new Token((int) '+', TokenType.OTHER), 0);
 			transitionTable.put(3, new Token((int) '-', TokenType.OTHER), 0);
 			transitionTable.put(3, new Token(null, TokenType.KW_OR), 0);
-			transitionTable.put(4, new Token(null, TokenType.HUMBLE_IDENTIFIER), 5);
+			transitionTable.put(4, new NonTerminalToken(NonTerminalTokenType.EXPRESSION), 5);
 			transitionTable.put(5, new Token((int) ')', TokenType.OTHER), 1);
 			transitionTable.put(6, new NonTerminalToken(NonTerminalTokenType.EXPRESSION), 7);
 			transitionTable.put(7, new Token((int) ']', TokenType.OTHER), 1);
