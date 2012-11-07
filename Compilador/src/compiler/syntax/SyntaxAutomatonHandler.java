@@ -30,7 +30,7 @@ public class SyntaxAutomatonHandler {
 	}
 
 	public void step(SymbolTable symbolTable) {
-		System.out.println("Submáquina: " + currentAutomaton +"\tEstado: " + currentAutomaton.getActualState() + "\tToken:\t" + currentToken);
+		System.out.println("Submáquina: " + currentAutomaton + "\tEstado: " + currentAutomaton.getActualState() + "\tToken:\t" + currentToken);
 
 		Token nextPath = null;
 
@@ -122,9 +122,7 @@ public class SyntaxAutomatonHandler {
 	private void step(Token token) {
 		currentAutomaton.setString(token);
 		currentAutomaton.step();
-		if (currentAutomaton.getSemanticActionId() != null) {
-			semantico_tbd(currentAutomaton.getSemanticActionId());
-		}
+		semantico_tbd(currentAutomaton.getSemanticActionId());
 		if (!NonTerminalToken.class.isAssignableFrom(token.getClass())) {
 			consumeToken();
 		}
@@ -140,7 +138,9 @@ public class SyntaxAutomatonHandler {
 		return result;
 	}
 
-	private void semantico_tbd(int semanticActionId) {
-		System.out.println("Ação semântica chamada: " + semanticActionId);
+	private void semantico_tbd(Integer semanticActionId) {
+		if (semanticActionId != null) {
+			System.out.println("Ação semântica chamada: " + semanticActionId);
+		}
 	}
 }

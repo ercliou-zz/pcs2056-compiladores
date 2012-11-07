@@ -8,7 +8,7 @@ import compiler.lexical.LexicalAnalyserImpl;
 import compiler.lexical.LexicalResult;
 
 
-public class Main {
+public class MainLexical {
 	
 	/**
 	 * Programa principal para testar o analisador léxico

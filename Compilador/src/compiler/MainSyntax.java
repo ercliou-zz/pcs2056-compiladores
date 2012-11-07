@@ -4,7 +4,7 @@ import java.io.IOException;
 
 import compiler.syntax.SyntaxAnalyserImpl;
 
-public class MainPraVerComoFuncionaFluxo {
+public class MainSyntax {
 
 	/**
 	 * Programa principal para testar o analisador léxico

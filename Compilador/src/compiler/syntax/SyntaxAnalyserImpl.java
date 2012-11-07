@@ -186,10 +186,12 @@ public class SyntaxAnalyserImpl {
 	}
 
 	public void compile(String filePath) throws IOException {
+		long time = System.currentTimeMillis();
+		System.out.println("Compilação iniciada.");
 		syntaxAutomatonHandler.initialize(FileExtractor.extract(filePath));
 		while (!syntaxAutomatonHandler.isComplete()) {
 			syntaxAutomatonHandler.step(st);
 		}
-		System.out.println("Compilação finalizada com sucesso!");
+		System.out.println("Compilação finalizada com sucesso em " + (System.currentTimeMillis() - time) + "ms.");
 	}
 }
