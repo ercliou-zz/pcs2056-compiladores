@@ -5,6 +5,7 @@ import java.util.Queue;
 import java.util.Set;
 
 import compiler.commons.Automaton;
+import compiler.commons.State;
 
 public class LexicalAutomaton extends Automaton<String> {
 
@@ -27,8 +28,8 @@ public class LexicalAutomaton extends Automaton<String> {
 		this.string = result;
 	}
 
-	public Integer peekNextState() {
-		return transitions.get(state, string.peek());
+	public State peekNextState() {
+		return transitions.get(state.getState(), string.peek());
 	}
 
 	public String getConsumedStringFormat() {
@@ -47,10 +48,11 @@ public class LexicalAutomaton extends Automaton<String> {
 	public void step() {
 		if (!isStringEmpty()) {
 			String stringAtom = string.remove();
-			state = transitions.get(state, stringAtom);
+			
+			state = transitions.get(state.getState(), stringAtom);
 			// ignora os caracteres no estado inicial e nos estados referentes à
 			// comentários
-			if (!ignoredStates.contains(state)) {
+			if (!ignoredStates.contains(state.getState())) {
 				consumedString.add(stringAtom);
 			}
 		} else {

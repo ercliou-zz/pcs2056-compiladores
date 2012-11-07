@@ -1,0 +1,10 @@
+// isto é um comentário
+int i = 0;
+while(i < 9){
+	if(i>=7){
+		print("texto");
+	} else if(i==5){
+		char a0b0 = 'a';
+		print("%c",a0b0);
+	}
+}

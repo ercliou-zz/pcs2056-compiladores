@@ -60,7 +60,7 @@ public class LexicalAnalyserImpl implements LexicalAnalyser {
 		transitions.put(11, ".|\n|\r", 0);
 		// ESTADO 12 (comentário)
 		transitions.put(12, "/", 13);
-		transitions.put(12, "[^/]", 0);
+		transitions.put(12, "[^//]", 0);
 		// ESTADO 13 (comentário final)
 		transitions.put(13, "[^\n]", 13);
 		transitions.put(13, "[\n]", 1);
@@ -97,7 +97,7 @@ public class LexicalAnalyserImpl implements LexicalAnalyser {
 
 		// loop, executando passo-à-passo o automato, enquanto houver caracteres
 		// na cadeia ou não for um estado final
-		while (!automaton.isStringEmpty() && automaton.peekNextState() != 0) {
+		while (!automaton.isStringEmpty() && automaton.peekNextState() != null && automaton.peekNextState().getState() != 0) {
 			automaton.step();
 			stepCounter++;
 		}
