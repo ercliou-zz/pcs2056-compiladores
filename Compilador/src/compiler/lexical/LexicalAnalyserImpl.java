@@ -74,7 +74,6 @@ public class LexicalAnalyserImpl implements LexicalAnalyser {
 		// consumido
 		Set<Integer> ignoredStates = new HashSet<Integer>();
 		ignoredStates.add(1);
-		ignoredStates.add(12);
 		ignoredStates.add(13);
 
 		automaton = new LexicalAutomaton(transitions, 15, 1, finalStates, ignoredStates);

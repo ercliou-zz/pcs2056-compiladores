@@ -12,8 +12,7 @@ public class LexicalAutomaton extends Automaton<String> {
 	protected Queue<String> consumedString;
 	protected Set<Integer> ignoredStates;
 
-	public LexicalAutomaton(LexicalAutomatonTransitionsTable transitions,
-			int statesQuantity, int initialState, Set<Integer> finalStates,
+	public LexicalAutomaton(LexicalAutomatonTransitionsTable transitions, int statesQuantity, int initialState, Set<Integer> finalStates,
 			Set<Integer> ignoredStates) {
 		super(transitions, statesQuantity, initialState, finalStates);
 		this.consumedString = new LinkedList<String>();
@@ -47,17 +46,17 @@ public class LexicalAutomaton extends Automaton<String> {
 	@Override
 	public void step() {
 		if (!isStringEmpty()) {
+			boolean ignoreLastState = ignoredStates.contains(state.getState());
 			String stringAtom = string.remove();
-			
 			state = transitions.get(state.getState(), stringAtom);
+			consumedString.add(stringAtom);
 			// ignora os caracteres no estado inicial e nos estados referentes à
 			// comentários
-			if (!ignoredStates.contains(state.getState())) {
-				consumedString.add(stringAtom);
+			if (ignoreLastState && state.equals(initialState)) {
+				consumedString = new LinkedList<String>();
 			}
 		} else {
-			throw new RuntimeException(
-					"Uma tentativa de passo do automato falhou pois a cadeia está vazia.");
+			throw new RuntimeException("Uma tentativa de passo do automato falhou pois a cadeia está vazia.");
 		}
 	}
 

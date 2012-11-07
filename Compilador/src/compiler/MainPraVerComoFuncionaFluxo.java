@@ -17,7 +17,7 @@ public class MainPraVerComoFuncionaFluxo {
 		SyntaxAnalyserImpl sa = new SyntaxAnalyserImpl();
 
 		sa.compile(args[0]);
-
+		System.out.println();
 		System.out.println(SymbolTable.getInstance());
 	}
 }
