@@ -42,6 +42,7 @@ public class SyntaxAutomaton {
 				currentAutomaton.step();
 				stack.push(currentAutomaton);
 				currentAutomaton = automatons.get(nextMachine);
+				currentAutomaton.resetAutomaton();
 			} else {
 				if(currentAutomaton.isComplete() && stack.peek() != null){
 					currentAutomaton = stack.pop();

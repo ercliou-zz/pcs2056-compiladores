@@ -6,6 +6,7 @@ import java.util.Queue;
 import java.util.Set;
 
 public class Automaton<C> {
+	private String name;
 	protected int state;
 	protected AutomatonTransitionsTable<C> transitions;
 	protected int statesQuantity;
@@ -65,4 +66,14 @@ public class Automaton<C> {
 	public Set<C> getPossibleTransitions(){
 		return transitions.getPossibleConsumables(state);
 	}
+	
+	public void setName(String name){
+		this.name = name;
+	}
+
+	@Override
+	public String toString() {
+		return name;
+	}
+	
 }
