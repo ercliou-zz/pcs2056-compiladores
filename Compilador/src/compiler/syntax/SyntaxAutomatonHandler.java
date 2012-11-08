@@ -34,7 +34,7 @@ public class SyntaxAutomatonHandler {
 
 		Token nextPath = null;
 
-		nextPath = decideAhead(currentAutomaton.getPossibleTransitions());
+		nextPath = decideNextState(currentAutomaton.getPossibleTransitions());
 
 		if (nextPath == null) {
 			if (currentAutomaton.isComplete() && stack.peek() != null) {
@@ -44,7 +44,7 @@ public class SyntaxAutomatonHandler {
 				throw new RuntimeException("Token não esperado: " + currentToken);
 			}
 		} else {
-			step(nextPath);
+			machineStep(nextPath);
 			if (NonTerminalToken.class.isAssignableFrom(nextPath.getClass())) {
 				stack.push(currentAutomaton);
 				System.out.println("PUSH\t" + printStack());
@@ -96,7 +96,7 @@ public class SyntaxAutomatonHandler {
 		return ntt;
 	}
 
-	private Token decideAhead(Set<Token> possibleTransitions) {
+	private Token decideNextState(Set<Token> possibleTransitions) {
 
 		if (currentAutomaton.hasLookAhead()) {
 			// WORKAROUND - DUMMY! MUDAR NO FUTURO DISTANTE
@@ -119,7 +119,7 @@ public class SyntaxAutomatonHandler {
 		}
 	}
 
-	private void step(Token token) {
+	private void machineStep(Token token) {
 		currentAutomaton.setString(token);
 		currentAutomaton.step();
 		semantico_tbd(currentAutomaton.getSemanticActionId());
