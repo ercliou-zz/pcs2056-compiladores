@@ -26,38 +26,38 @@ public class SyntaxAnalyserImpl {
 
 		{
 			AutomatonTransitionsTable<Token> transitionTable = new AutomatonTransitionsTable<Token>(16);
-			transitionTable.put(0, new Token(null, TokenType.KW_VOID), 1);
-			transitionTable.put(0, new Token(null, TokenType.KW_INT), 1);
-			transitionTable.put(0, new Token(null, TokenType.KW_BOOL), 1);
-			transitionTable.put(1, new Token(null, TokenType.IDENTIFIER), 2);
+			transitionTable.put(0, new Token(null, TokenType.KW_VOID), new SyntaxState(1, false, 1));
+			transitionTable.put(0, new Token(null, TokenType.KW_INT), new SyntaxState(1, false, 1));
+			transitionTable.put(0, new Token(null, TokenType.KW_BOOL), new SyntaxState(1, false, 1));
+			transitionTable.put(1, new Token(null, TokenType.IDENTIFIER), new SyntaxState(2, false, 2));
 			transitionTable.put(2, new Token((int) '(', TokenType.OTHER), 3);
-			transitionTable.put(3, new Token(null, TokenType.KW_VOID), 4);
-			transitionTable.put(3, new Token(null, TokenType.KW_INT), 4);
-			transitionTable.put(3, new Token(null, TokenType.KW_BOOL), 4);
+			transitionTable.put(3, new Token(null, TokenType.KW_VOID), new SyntaxState(4, false, 1));
+			transitionTable.put(3, new Token(null, TokenType.KW_INT), new SyntaxState(4, false, 1));
+			transitionTable.put(3, new Token(null, TokenType.KW_BOOL), new SyntaxState(4, false, 1));
 			transitionTable.put(3, new Token((int) ')', TokenType.OTHER), 5);
-			transitionTable.put(4, new Token(null, TokenType.IDENTIFIER), 6);
-			transitionTable.put(5, new Token((int) '{', TokenType.OTHER), 7);
+			transitionTable.put(4, new Token(null, TokenType.IDENTIFIER), new SyntaxState(6, false, 3));
+			transitionTable.put(5, new Token((int) '{', TokenType.OTHER), new SyntaxState(7, false, 5));
 			transitionTable.put(6, new Token((int) ',', TokenType.OTHER), 8);
 			transitionTable.put(6, new Token((int) ')', TokenType.OTHER), 5);
-			transitionTable.put(7, new Token(null, TokenType.KW_VOID), 9);
-			transitionTable.put(7, new Token(null, TokenType.KW_INT), 9);
-			transitionTable.put(7, new Token(null, TokenType.KW_BOOL), 9);
+			transitionTable.put(7, new Token(null, TokenType.KW_VOID), new SyntaxState(9, false, 1));
+			transitionTable.put(7, new Token(null, TokenType.KW_INT), new SyntaxState(9, false, 1));
+			transitionTable.put(7, new Token(null, TokenType.KW_BOOL), new SyntaxState(9, false, 1));
 			transitionTable.put(7, new NonTerminalToken(NonTerminalTokenType.COMMAND), 10);
 			transitionTable.put(7, new Token((int) '}', TokenType.OTHER), 11);
-			transitionTable.put(8, new Token(null, TokenType.KW_VOID), 4);
-			transitionTable.put(8, new Token(null, TokenType.KW_INT), 4);
-			transitionTable.put(8, new Token(null, TokenType.KW_BOOL), 4);
-			transitionTable.put(9, new Token(null, TokenType.IDENTIFIER), 12);
+			transitionTable.put(8, new Token(null, TokenType.KW_VOID), new SyntaxState(4, false, 1));
+			transitionTable.put(8, new Token(null, TokenType.KW_INT), new SyntaxState(4, false, 1));
+			transitionTable.put(8, new Token(null, TokenType.KW_BOOL), new SyntaxState(4, false, 1));
+			transitionTable.put(9, new Token(null, TokenType.IDENTIFIER), new SyntaxState(12, false, 4));
 			transitionTable.put(10, new NonTerminalToken(NonTerminalTokenType.COMMAND), 10);
 			transitionTable.put(10, new Token((int) '}', TokenType.OTHER), 11);
-			transitionTable.put(11, new Token(null, TokenType.KW_VOID), 1);
-			transitionTable.put(11, new Token(null, TokenType.KW_INT), 1);
-			transitionTable.put(11, new Token(null, TokenType.KW_BOOL), 1);
+			transitionTable.put(11, new Token(null, TokenType.KW_VOID), new SyntaxState(1, false, 1));
+			transitionTable.put(11, new Token(null, TokenType.KW_INT), new SyntaxState(1, false, 1));
+			transitionTable.put(11, new Token(null, TokenType.KW_BOOL), new SyntaxState(1, false, 1));
 			transitionTable.put(12, new Token((int) '[', TokenType.OTHER), 13);
-			transitionTable.put(12, new Token((int) ';', TokenType.OTHER), 7);
-			transitionTable.put(13, new Token(null, TokenType.NUMERIC), 14);
+			transitionTable.put(12, new Token((int) ';', TokenType.OTHER), new SyntaxState(7, false, 7));
+			transitionTable.put(13, new Token(null, TokenType.NUMERIC), new SyntaxState(14, false, 6));
 			transitionTable.put(14, new Token((int) ']', TokenType.OTHER), 15);
-			transitionTable.put(15, new Token((int) ';', TokenType.OTHER), 7);
+			transitionTable.put(15, new Token((int) ';', TokenType.OTHER), new SyntaxState(7, false, 7));
 
 			Set<Integer> finals = new HashSet<Integer>();
 			finals.add(11);
@@ -187,11 +187,11 @@ public class SyntaxAnalyserImpl {
 
 	public void compile(String filePath) throws IOException {
 		long time = System.currentTimeMillis();
-		System.out.println("Compilação iniciada.");
+		System.out.println("Compilação iniciada.\n");
 		syntaxAutomatonHandler.initialize(FileExtractor.extract(filePath));
 		while (!syntaxAutomatonHandler.isComplete()) {
-			syntaxAutomatonHandler.step(st);
+			syntaxAutomatonHandler.step();
 		}
-		System.out.println("Compilação finalizada com sucesso em " + (System.currentTimeMillis() - time) + "ms.");
+		System.out.println("\nCompilação finalizada com sucesso em " + (System.currentTimeMillis() - time) + "ms.");
 	}
 }

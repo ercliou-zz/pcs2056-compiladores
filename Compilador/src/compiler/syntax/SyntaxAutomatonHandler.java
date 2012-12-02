@@ -5,7 +5,6 @@ import java.util.Set;
 import java.util.Stack;
 
 import compiler.commons.NonTerminalToken;
-import compiler.commons.SymbolTable;
 import compiler.commons.Token;
 import compiler.commons.TokenType;
 import compiler.lexical.LexicalAnalyser;
@@ -29,7 +28,7 @@ public class SyntaxAutomatonHandler {
 		stack = new Stack<SyntaxAutomaton>();
 	}
 
-	public void step(SymbolTable symbolTable) {
+	public void step() {
 		System.out.println("Submáquina: " + currentAutomaton + "\tEstado: " + currentAutomaton.getActualState() + "\tToken:\t" + currentToken);
 
 		Token nextPath = null;
@@ -122,7 +121,6 @@ public class SyntaxAutomatonHandler {
 	private void machineStep(Token token) {
 		currentAutomaton.setString(token);
 		currentAutomaton.step();
-		semantico_tbd(currentAutomaton.getSemanticActionId());
 		if (!NonTerminalToken.class.isAssignableFrom(token.getClass())) {
 			consumeToken();
 		}
@@ -138,9 +136,4 @@ public class SyntaxAutomatonHandler {
 		return result;
 	}
 
-	private void semantico_tbd(Integer semanticActionId) {
-		if (semanticActionId != null) {
-			System.out.println("Ação semântica chamada: " + semanticActionId);
-		}
-	}
 }

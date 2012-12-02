@@ -8,6 +8,7 @@ import java.util.Set;
 public class Automaton<C> {
 	protected String name;
 	protected State state;
+	protected C actualElement;
 	protected AutomatonTransitionsTable<C> transitions;
 	protected int statesQuantity;
 	protected Queue<C> string = new LinkedList<C>();
@@ -44,8 +45,8 @@ public class Automaton<C> {
 
 	public void step() {
 		if (!isStringEmpty()) {
-			C stringAtom = string.remove();
-			state = transitions.get(state.getState(), stringAtom);
+			actualElement = string.remove();
+			state = transitions.get(state.getState(), actualElement);
 		} else {
 			throw new RuntimeException("Uma tentativa de passo do automato falhou pois a cadeia está vazia.");
 		}

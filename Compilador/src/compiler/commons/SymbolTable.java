@@ -11,38 +11,47 @@ import java.util.List;
 public class SymbolTable {
 
 	private static SymbolTable INSTANCE;
-	
-	private List<String> table;
+
+	private List<SymbolTableElement> table;
 
 	private SymbolTable() {
-		table = new ArrayList<String>();
+		table = new ArrayList<SymbolTableElement>();
 	}
-	
-	public static SymbolTable getInstance(){
-		if(INSTANCE == null){
+
+	public static SymbolTable getInstance() {
+		if (INSTANCE == null) {
 			INSTANCE = new SymbolTable();
 		}
 		return INSTANCE;
 	}
-	
+
 	public Integer get(String key) {
-		return table.indexOf(key);
+		return table.indexOf(new SymbolTableElement(key, null));
+	}
+
+	public SymbolTableElement getElementById(int id) {
+		return table.get(id);
 	}
 
 	public int put(String identifier) {
-		table.add(identifier);
-		return table.indexOf(identifier);
+		table.add(new SymbolTableElement(identifier, null));
+		return table.indexOf(new SymbolTableElement(identifier, null));
 	}
 
 	public boolean contains(String identifier) {
-		return table.contains(identifier);
+		for (SymbolTableElement element : table) {
+			if (element.getName().equals(identifier)) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	@Override
 	public String toString() {
 		String stringForm = "Symbol Table:\n";
-		for (String entry : table) {
-			stringForm += (table.indexOf(entry) + " = " + entry + "\n");
+		for (SymbolTableElement entry : table) {
+			stringForm += (table.indexOf(entry) + " = " + entry.getType() + "\t" + entry.getName() + "\n");
 		}
 		return stringForm;
 	}
