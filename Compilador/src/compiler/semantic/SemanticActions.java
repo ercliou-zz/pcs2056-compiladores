@@ -1,5 +1,9 @@
 package compiler.semantic;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import compiler.commons.IdentifierType;
 import compiler.commons.SymbolTable;
 import compiler.commons.Token;
@@ -14,8 +18,12 @@ public class SemanticActions {
 	private SymbolTable st = SymbolTable.getInstance();
 	private CodeGenerator cg = CodeGenerator.getInstance();
 
+	private int lastFunctionStacked;
 	private int functionParameterCounter = 0;
 	private boolean isArray = false;
+	private boolean functionToVariable = false;
+
+	private ExpressionProcessor expressionProcessor = ExpressionProcessor.getInstance();
 
 	private SemanticActions() {
 
@@ -53,38 +61,131 @@ public class SemanticActions {
 			break;
 		case 7:
 			generateVariableDeclaration();
+			break;
+		case 8:
+			// caso usado em atribuicao e chamada de funcao
+			identifierIdStack(token.getValue());
+			break;
+		case 9:
+			// gerar codigo da expressao e atribuicao
+		case 10:
+			processExpression(token);
+			break;
+		case 11:
+			finalizeExpression();
+			break;
+		case 12:
+			isSimpleVarAttribution();
+			break;
+		case 13:
+			isArrayVarAttribution();
+			break;
+		case 14:
+			// gerar codigo atribuicao simples ( finalizar expressao )
+			generateExpressionAttributionCode();
+			break;
+		case 15:
+			// expressao parametro de uma funcao
+			stackFunctionParameterExpression();
+			break;
+		case 16:
+			generateFunctionCall();
+			break;
 		default:
 			break;
 		}
 	}
 
+	private void generateFunctionCall() {
+		List<String> parameterExpressions = new ArrayList<String>();
+		while (functionParameterCounter > 0) {
+			parameterExpressions.add((String) ods.pop());
+			functionParameterCounter--;
+		}
+		Collections.reverse(parameterExpressions);
+		int i=0;
+		for (String string : parameterExpressions) {
+			cg.concat(string);
+			cg.concat("\tMM\t" + lastFunctionStacked + "_" + i + "\n");
+			i++;
+		}
+
+	}
+
+	private void stackFunctionParameterExpression() {
+		finalizeExpression();
+		functionParameterCounter++;
+	}
+
+	private void generateExpressionAttributionCode() {
+		finalizeExpression();
+		cg.concat((String) ods.pop());
+		if (isArray) {
+			cg.concat("\tMM\tVALUE_W\n");
+			cg.concat((String) ods.pop());
+			cg.concat("\tMM\tINDEX_W\n");
+			cg.concat("\tLD\t" + ods.pop() + "_P\n");
+			cg.concat("\tMM\tARRAY_W\n");
+			cg.concat("\tSC\tWRITE_ARRAY\n\n");
+		} else {
+			cg.concat("\tMM\t" + ods.pop() + "\n\n");
+		}
+	}
+
+	private void isArrayVarAttribution() {
+		isArray = true;
+		finalizeExpression();
+	}
+
+	private void isSimpleVarAttribution() {
+		isArray = false;
+	}
+
+	private void processExpression(Token token) {
+		expressionProcessor.concatToken(token);
+	}
+
+	private void finalizeExpression() {
+		expressionProcessor.reversePoloneseTransformation();
+		ods.push(expressionProcessor.generateExpressionCode());
+		expressionProcessor.restart();
+	}
+
+	private void identifierIdStack(int identifierId) {
+		ods.push(identifierId);
+//		lastFunctionStacked = identifierId;
+	}
+
 	private void identifierTypeStack(TokenType tokenType) {
 		ods.push(getTypeEnum(tokenType));
-		System.err.println("passou");
 	}
 
 	private void functionIdStack(int identifierId) {
 		IdentifierType poppedType = (IdentifierType) ods.pop();
 		st.getElementById(identifierId).setType(poppedType);
+		st.getElementById(identifierId).setFunction(true);
 		ots.push(identifierId);
+//		lastFunctionStacked = identifierId;
 	}
 
 	private void functionParameterStack(int identifierId) {
 		IdentifierType poppedType = (IdentifierType) ods.pop();
 		st.getElementById(identifierId).setType(poppedType);
+		st.getElementById(identifierId).setFunctionParameter(true);
+//		st.getElementById(identifierId).setOwnerFunction(lastFunctionStacked);
+		st.getElementById(identifierId).setParameterOrder(functionParameterCounter);
 		ods.push(identifierId);
 		functionParameterCounter++;
 	}
 
 	private void generateFunctionBaseCode() {
+		List<Integer> parameters = new ArrayList<Integer>();
 		while (functionParameterCounter > 0) {
-			String p = "P_" + ots.peek() + "_" + ods.pop();
-			p += "\t$\t/0001\n";
-			cg.concat(p);
+			parameters.add((Integer) ods.pop());
 			functionParameterCounter--;
 		}
-		cg.concat(ots.pop() + "\tK\t/0000\n");
-		// System.out.println(cg.print());
+		cg.addFunction((Integer) ots.peek(), parameters);
+		cg.concat((Integer) ots.pop() + "\tJP\t/0000\n");
 	}
 
 	private void associateVariableType(int identifierId) {
@@ -101,22 +202,15 @@ public class SemanticActions {
 	private void generateVariableDeclaration() {
 		if (isArray) {
 			int arraySize = (Integer) ods.pop();
-			int functionId = (Integer) ods.pop();
+			int identifierId = (Integer) ods.pop();
 			isArray = false;
-
 			// TODO SE ARRAYSIZE <= 0 EXCECAO
-
-			cg.concat(functionId + "\tK\t/0000\n");
-			while (arraySize > 0) {
-				cg.concat("\tK\t/0000\n");
-			}
-			cg.concat(functionId + "_P\tK\t" + functionId + "\n");
+			cg.addArrayVariable(identifierId, arraySize);
 		} else {
-			int functionId = (Integer) ods.pop();
-			cg.concat(functionId + "\tK\t/0000\n");
+			int identifierId = (Integer) ods.pop();
+			cg.addSimpleVariable(identifierId);
 		}
-		
-		System.out.println(cg.print());
+
 	}
 
 	private IdentifierType getTypeEnum(TokenType type) {
@@ -130,4 +224,5 @@ public class SemanticActions {
 		}
 		return null;
 	}
+
 }

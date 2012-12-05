@@ -26,6 +26,12 @@ public class OperatorsStack {
 	}
 
 	public Object peek() {
+		if (stack.isEmpty())
+			return null;
 		return stack.peek();
+	}
+	
+	public int getSize(){
+		return stack.size();
 	}
 }

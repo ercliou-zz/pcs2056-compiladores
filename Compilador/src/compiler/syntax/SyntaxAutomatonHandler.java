@@ -38,17 +38,20 @@ public class SyntaxAutomatonHandler {
 		if (nextPath == null) {
 			if (currentAutomaton.isComplete() && stack.peek() != null) {
 				currentAutomaton = stack.pop();
+				nextPath = decideNextState(currentAutomaton.getPossibleTransitions());
+				machineStep(nextPath);
 				System.out.println("POP\t" + printStack());
 			} else {
 				throw new RuntimeException("Token não esperado: " + currentToken);
 			}
 		} else {
-			machineStep(nextPath);
 			if (NonTerminalToken.class.isAssignableFrom(nextPath.getClass())) {
 				stack.push(currentAutomaton);
 				System.out.println("PUSH\t" + printStack());
 				currentAutomaton = automatons.get(nextPath).clone();
 				currentAutomaton.resetAutomaton();
+			} else {
+				machineStep(nextPath);
 			}
 		}
 	}
@@ -103,7 +106,7 @@ public class SyntaxAutomatonHandler {
 			if (nextToken.getType() == TokenType.OTHER && nextToken.getValue() == '(') {
 				for (Token token : possibleTransitions) {
 					if (token.getType() == TokenType.IDENTIFIER) {
-						return token;
+						return currentToken;
 					}
 				}
 			}

@@ -5,6 +5,8 @@ import java.util.Set;
 import compiler.commons.Automaton;
 import compiler.commons.AutomatonTransitionsTable;
 import compiler.commons.Token;
+import compiler.semantic.OperandsStack;
+import compiler.semantic.OperatorsStack;
 import compiler.semantic.SemanticActions;
 
 public class SyntaxAutomaton extends Automaton<Token> {
@@ -17,6 +19,7 @@ public class SyntaxAutomaton extends Automaton<Token> {
 	public void step() {
 		super.step();
 		SemanticActions.getIntance().processSemantic(getSemanticActionId(), actualElement);
+		System.out.println("====== ACAO CHAMADA: " + getSemanticActionId() + " " + OperatorsStack.getInstance().getSize() + " " + OperandsStack.getInstance().getSize() + " " + OperandsStack.getInstance().peek());
 	}
 
 	public boolean hasLookAhead() {

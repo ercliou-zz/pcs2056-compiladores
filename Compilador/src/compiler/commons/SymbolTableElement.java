@@ -3,11 +3,33 @@ package compiler.commons;
 public class SymbolTableElement {
 	private String name;
 	private IdentifierType type;
-	
+	private boolean isFunction;
+	private boolean isFunctionParameter;
+	private int ownerFunction;
+	private int parameterOrder;
+
 	public SymbolTableElement(String name, IdentifierType type) {
 		super();
 		this.name = name;
 		this.type = type;
+		isFunction = false;
+		isFunctionParameter = false;
+	}
+
+	public void setFunction(boolean isFunction) {
+		this.isFunction = isFunction;
+	}
+
+	public void setFunctionParameter(boolean isFunctionParameter) {
+		this.isFunctionParameter = isFunctionParameter;
+	}
+
+	public void setOwnerFunction(int ownerFunction) {
+		this.ownerFunction = ownerFunction;
+	}
+
+	public void setParameterOrder(int parameterOrder) {
+		this.parameterOrder = parameterOrder;
 	}
 
 	public String getName() {
@@ -24,6 +46,23 @@ public class SymbolTableElement {
 
 	public void setType(IdentifierType type) {
 		this.type = type;
+	}
+	
+	public boolean isFunction(){
+		return isFunction;
+	}
+	
+	public boolean isFunctionParameter(){
+		return isFunctionParameter;
+	}
+	
+
+	public int getOwnerFunction() {
+		return ownerFunction;
+	}
+
+	public int getParameterOrder() {
+		return parameterOrder;
 	}
 
 	@Override

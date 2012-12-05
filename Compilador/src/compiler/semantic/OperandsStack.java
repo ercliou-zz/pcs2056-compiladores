@@ -27,6 +27,12 @@ public class OperandsStack {
 	}
 
 	public Object peek() {
-		return stack.peek();
+		if (!stack.isEmpty())
+			return stack.peek();
+		return null;
+	}
+
+	public int getSize() {
+		return stack.size();
 	}
 }
