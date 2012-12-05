@@ -103,12 +103,13 @@ public class SemanticActions {
 			functionParameterCounter--;
 		}
 		Collections.reverse(parameterExpressions);
-		int i=0;
+		int i = 0;
 		for (String string : parameterExpressions) {
 			cg.concat(string);
 			cg.concat("\tMM\t" + lastFunctionStacked + "_" + i + "\n");
 			i++;
 		}
+		cg.concat("\tSC\t" + lastFunctionStacked + "\n\n");
 
 	}
 
@@ -153,7 +154,7 @@ public class SemanticActions {
 
 	private void identifierIdStack(int identifierId) {
 		ods.push(identifierId);
-//		lastFunctionStacked = identifierId;
+		lastFunctionStacked = identifierId;
 	}
 
 	private void identifierTypeStack(TokenType tokenType) {
@@ -165,14 +166,14 @@ public class SemanticActions {
 		st.getElementById(identifierId).setType(poppedType);
 		st.getElementById(identifierId).setFunction(true);
 		ots.push(identifierId);
-//		lastFunctionStacked = identifierId;
+		// lastFunctionStacked = identifierId;
 	}
 
 	private void functionParameterStack(int identifierId) {
 		IdentifierType poppedType = (IdentifierType) ods.pop();
 		st.getElementById(identifierId).setType(poppedType);
 		st.getElementById(identifierId).setFunctionParameter(true);
-//		st.getElementById(identifierId).setOwnerFunction(lastFunctionStacked);
+		// st.getElementById(identifierId).setOwnerFunction(lastFunctionStacked);
 		st.getElementById(identifierId).setParameterOrder(functionParameterCounter);
 		ods.push(identifierId);
 		functionParameterCounter++;

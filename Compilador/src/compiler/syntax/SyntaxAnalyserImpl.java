@@ -91,7 +91,7 @@ public class SyntaxAnalyserImpl {
 			transitionTable.put(8, new NonTerminalToken(NonTerminalTokenType.EXPRESSION), new SyntaxState(24, false, 13));
 			transitionTable.put(9, new Token(null, TokenType.IDENTIFIER), new SyntaxState(19, false, 8));
 			transitionTable.put(9, new NonTerminalToken(NonTerminalTokenType.EXPRESSION), new SyntaxState(11, false, 14));
-			transitionTable.put(10, new NonTerminalToken(NonTerminalTokenType.EXPRESSION), new SyntaxState(12, false, 11));
+			transitionTable.put(10, new NonTerminalToken(NonTerminalTokenType.EXPRESSION), new SyntaxState(12, false, 15));
 			transitionTable.put(10, new Token((int) ')', TokenType.OTHER), 11);
 			transitionTable.put(11, new Token((int) ';', TokenType.OTHER), 13);
 			transitionTable.put(12, new Token((int) ')', TokenType.OTHER), new SyntaxState(11, false, 16));
@@ -99,7 +99,7 @@ public class SyntaxAnalyserImpl {
 			transitionTable.put(14, new NonTerminalToken(NonTerminalTokenType.COMMAND), 14);
 			transitionTable.put(14, new Token((int) '}', TokenType.OTHER), 13);
 			transitionTable.put(15, new Token(null, TokenType.IDENTIFIER), 17);
-			transitionTable.put(16, new NonTerminalToken(NonTerminalTokenType.EXPRESSION), new SyntaxState(12, false, 11));
+			transitionTable.put(16, new NonTerminalToken(NonTerminalTokenType.EXPRESSION), new SyntaxState(12, false, 15));
 			transitionTable.put(17, new Token((int) '[', TokenType.OTHER), 18);
 			transitionTable.put(17, new Token((int) ';', TokenType.OTHER), 6);
 			transitionTable.put(18, new Token(null, TokenType.NUMERIC), 20);

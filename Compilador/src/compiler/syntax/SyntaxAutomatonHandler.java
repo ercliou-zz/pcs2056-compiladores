@@ -38,7 +38,13 @@ public class SyntaxAutomatonHandler {
 		if (nextPath == null) {
 			if (currentAutomaton.isComplete() && stack.peek() != null) {
 				currentAutomaton = stack.pop();
-				nextPath = decideNextState(currentAutomaton.getPossibleTransitions());
+//				nextPath = decideNextState(currentAutomaton.getPossibleTransitions());
+				for (Token token : currentAutomaton.getPossibleTransitions()) {
+					if(NonTerminalToken.class.isAssignableFrom(token.getClass())){
+						nextPath = token;
+						break;
+					}
+				}
 				machineStep(nextPath);
 				System.out.println("POP\t" + printStack());
 			} else {
