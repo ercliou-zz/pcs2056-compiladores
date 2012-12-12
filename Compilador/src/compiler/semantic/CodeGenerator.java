@@ -65,6 +65,7 @@ public class CodeGenerator {
 		env.append(generateWriteToArrayFunction());
 		env.append(generateArrayFunctionsVariables());
 		env.append(generateFunctionParameters());
+		env.append(generateIOFunctions());
 
 		env.append(simpleVariablesSB.toString()).append("\n");
 		env.append(arrayVariablesSB.toString());
@@ -116,6 +117,12 @@ public class CodeGenerator {
 
 	private String generateFunctionParameters() {
 		return functionParametersSB.toString();
+	}
+	
+	private String generateIOFunctions(){
+		StringBuilder env = new StringBuilder();
+		// TODO HERE
+		return env.toString();
 	}
 
 }
