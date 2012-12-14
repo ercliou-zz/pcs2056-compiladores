@@ -3,6 +3,7 @@ package compiler.semantic;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Stack;
 
 import compiler.commons.IdentifierType;
 import compiler.commons.SymbolTable;
@@ -19,9 +20,10 @@ public class SemanticActions {
 	private CodeGenerator cg = CodeGenerator.getInstance();
 
 	private int lastFunctionStacked;
+	private Stack<Integer> whileStack = new Stack<Integer>();
+	private int whileCounter = 0;
 	private int functionParameterCounter = 0;
 	private boolean isArray = false;
-	private boolean functionToVariable = false;
 
 	private ExpressionProcessor expressionProcessor = ExpressionProcessor.getInstance();
 
@@ -91,9 +93,87 @@ public class SemanticActions {
 		case 16:
 			generateFunctionCall();
 			break;
+		case 17:
+			stackComparator(token);
+			break;
+		case 18:
+			generateWhileCode();
+			break;
+		case 19:
+			finalizeWhileCode();
+			break;
 		default:
 			break;
 		}
+	}
+
+	private void finalizeWhileCode() {
+		int whileCount = whileStack.pop();
+		cg.concat("\tJP\tWHILE_" + whileCount + "\r\n");
+		cg.concat("END_WHILE_" + whileCount + "\tSC\tNOP\r\n\r\n");
+	}
+
+	private void generateWhileCode() {
+		cg.concat("WHILE_" + whileCounter + "\tSC\tNOP\r\n");
+		String exp1 = (String) ods.pop();
+		String exp2 = (String) ods.pop();
+		cg.concat(generateComparision(exp1, exp2, (Token) ots.pop(), whileCounter));
+		cg.concat("\tJZ\tEND_WHILE_" + whileCounter + "\r\n\r\n");
+		whileStack.push(whileCounter);
+		whileCounter++;
+	}
+
+	private String generateComparision(String exp1, String exp2, Token operator, int counter) {
+		StringBuilder sb = new StringBuilder();
+		sb.append(exp1);
+		sb.append("\tMM\tD_BUFFER\r\n");
+		sb.append(exp2);
+		sb.append("\t-\tD_BUFFER\r\n");
+
+		sb.append(generateComparatorCode(operator, counter));
+
+		sb.append("W_F_" + counter + "\tLD\tCONST_ZERO\r\n");
+		sb.append("\tJP\tW_E_" + counter + "\r\n");
+		sb.append("W_T_" + counter + "\tLD\tCONST_ONE\r\n");
+		sb.append("\tJP\tW_E_" + counter + "\r\n");
+		sb.append("W_E_" + counter + "\tMM\tD_BUFFER\r\n");
+		return sb.toString();
+	}
+
+	private String generateComparatorCode(Token operator, int counter) {
+		StringBuilder sb = new StringBuilder();
+		if (operator.getType() == TokenType.OTHER) {
+			switch (operator.getValue()) {
+			case (int) '>':
+				sb.append("\tJZ\tW_F_" + counter + "\r\n");
+				sb.append("\tJN\tW_F_" + counter + "\r\n");
+				sb.append("\tJP\tW_T_" + counter + "\r\n");
+				break;
+			case (int) '<':
+				sb.append("\tJN\tW_T_" + counter + "\r\n");
+				sb.append("\tJP\tW_F_" + counter + "\r\n");
+				break;
+			}
+		} else if (operator.getType() == TokenType.GREATER_OR_EQUALS) {
+			sb.append("\tJN\tW_F_" + counter + "\r\n");
+			sb.append("\tJP\tW_T_" + counter + "\r\n");
+		} else if (operator.getType() == TokenType.LESS_OR_EQUALS) {
+			sb.append("\tJZ\tW_T_" + counter + "\r\n");
+			sb.append("\tJN\tW_T_" + counter + "\r\n");
+			sb.append("\tJP\tW_F_" + counter + "\r\n");
+		} else if (operator.getType() == TokenType.EQUALS) {
+			sb.append("\tJZ\tW_T_" + counter + "\r\n");
+			sb.append("\tJP\tW_F_" + counter + "\r\n");
+		} else if (operator.getType() == TokenType.DIFFERENT) {
+			sb.append("\tJZ\tW_F_" + counter + "\r\n");
+			sb.append("\tJP\tW_T_" + counter + "\r\n");
+		}
+
+		return sb.toString();
+	}
+
+	private void stackComparator(Token token) {
+		ots.push(token);
 	}
 
 	private void generateFunctionCall() {
@@ -106,10 +186,10 @@ public class SemanticActions {
 		int i = 0;
 		for (String string : parameterExpressions) {
 			cg.concat(string);
-			cg.concat("\tMM\t" + lastFunctionStacked + "_" + i + "\n");
+			cg.concat("\tMM\t" + lastFunctionStacked + "_" + i + "\r\n");
 			i++;
 		}
-		cg.concat("\tSC\t" + lastFunctionStacked + "\n\n");
+		cg.concat("\tSC\t" + lastFunctionStacked + "\r\n\r\n");
 
 	}
 
@@ -122,14 +202,14 @@ public class SemanticActions {
 		finalizeExpression();
 		cg.concat((String) ods.pop());
 		if (isArray) {
-			cg.concat("\tMM\tVALUE_W\n");
+			cg.concat("\tMM\tVALUE_W\r\n");
 			cg.concat((String) ods.pop());
-			cg.concat("\tMM\tINDEX_W\n");
-			cg.concat("\tLD\t" + ods.pop() + "_P\n");
-			cg.concat("\tMM\tARRAY_W\n");
-			cg.concat("\tSC\tWRITE_ARRAY\n\n");
+			cg.concat("\tMM\tINDEX_W\r\n");
+			cg.concat("\tLD\t" + ods.pop() + "_P\r\n");
+			cg.concat("\tMM\tARRAY_W\r\n");
+			cg.concat("\tSC\tWRITE_ARRAY\r\n\r\n");
 		} else {
-			cg.concat("\tMM\t" + ods.pop() + "\n\n");
+			cg.concat("\tMM\t" + ods.pop() + "\r\n\r\n");
 		}
 	}
 
@@ -186,7 +266,7 @@ public class SemanticActions {
 			functionParameterCounter--;
 		}
 		cg.addFunction((Integer) ots.peek(), parameters);
-		cg.concat((Integer) ots.pop() + "\tJP\t/0000\n");
+		cg.concat((Integer) ots.pop() + "\tJP\t/0000\r\n");
 	}
 
 	private void associateVariableType(int identifierId) {
@@ -207,6 +287,7 @@ public class SemanticActions {
 			isArray = false;
 			// TODO SE ARRAYSIZE <= 0 EXCECAO
 			cg.addArrayVariable(identifierId, arraySize);
+			st.getElementById(identifierId).setArray(true);
 		} else {
 			int identifierId = (Integer) ods.pop();
 			cg.addSimpleVariable(identifierId);

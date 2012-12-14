@@ -97,7 +97,7 @@ public class SyntaxAnalyserImpl {
 			transitionTable.put(12, new Token((int) ')', TokenType.OTHER), new SyntaxState(11, false, 16));
 			transitionTable.put(12, new Token((int) ',', TokenType.OTHER), 16);
 			transitionTable.put(14, new NonTerminalToken(NonTerminalTokenType.COMMAND), 14);
-			transitionTable.put(14, new Token((int) '}', TokenType.OTHER), 13);
+			transitionTable.put(14, new Token((int) '}', TokenType.OTHER), new SyntaxState(13, false, 19));
 			transitionTable.put(15, new Token(null, TokenType.IDENTIFIER), 17);
 			transitionTable.put(16, new NonTerminalToken(NonTerminalTokenType.EXPRESSION), new SyntaxState(12, false, 15));
 			transitionTable.put(17, new Token((int) '[', TokenType.OTHER), 18);
@@ -125,13 +125,13 @@ public class SyntaxAnalyserImpl {
 			transitionTable.put(31, new NonTerminalToken(NonTerminalTokenType.EXPRESSION), new SyntaxState(32, false, 11));
 			transitionTable.put(32, new Token((int) ']', TokenType.OTHER), 23);
 			transitionTable.put(33, new NonTerminalToken(NonTerminalTokenType.EXPRESSION), new SyntaxState(34, false, 11));
-			transitionTable.put(34, new Token((int) ')', TokenType.OTHER), 36);
-			transitionTable.put(34, new Token((int) '>', TokenType.OTHER), 33);
-			transitionTable.put(34, new Token((int) '<', TokenType.OTHER), 33);
-			transitionTable.put(34, new Token(null, TokenType.GREATER_OR_EQUALS), 33);
-			transitionTable.put(34, new Token(null, TokenType.LESS_OR_EQUALS), 33);
-			transitionTable.put(34, new Token(null, TokenType.EQUALS), 33);
-			transitionTable.put(34, new Token(null, TokenType.DIFFERENT), 33);
+			transitionTable.put(34, new Token((int) ')', TokenType.OTHER), new SyntaxState(36, false, 18));
+			transitionTable.put(34, new Token((int) '>', TokenType.OTHER), new SyntaxState(33, false, 17));
+			transitionTable.put(34, new Token((int) '<', TokenType.OTHER), new SyntaxState(33, false, 17));
+			transitionTable.put(34, new Token(null, TokenType.GREATER_OR_EQUALS), new SyntaxState(33, false, 17));
+			transitionTable.put(34, new Token(null, TokenType.LESS_OR_EQUALS), new SyntaxState(33, false, 17));
+			transitionTable.put(34, new Token(null, TokenType.EQUALS), new SyntaxState(33, false, 17));
+			transitionTable.put(34, new Token(null, TokenType.DIFFERENT), new SyntaxState(33, false, 17));
 			transitionTable.put(35, new Token(null, TokenType.KW_ELSE), 36);
 			transitionTable.put(36, new NonTerminalToken(NonTerminalTokenType.COMMAND), 13);
 
@@ -185,7 +185,7 @@ public class SyntaxAnalyserImpl {
 		syntaxAutomatonHandler = new SyntaxAutomatonHandler(automatons, new NonTerminalToken(NonTerminalTokenType.PROGRAM));
 	}
 
-	public void compile(String filePath) throws IOException {
+	public void compile(String filePath, String outputPath) throws IOException {
 		long time = System.currentTimeMillis();
 		System.out.println("Compilação iniciada.\n");
 		syntaxAutomatonHandler.initialize(FileExtractor.extract(filePath));
@@ -194,6 +194,7 @@ public class SyntaxAnalyserImpl {
 		}
 		CodeGenerator.getInstance().generateEnvironment();
 		System.out.println(CodeGenerator.getInstance().print());
+		CodeGenerator.getInstance().writeOutputFile(outputPath);
 		System.out.println("\nCompilação finalizada com sucesso em " + (System.currentTimeMillis() - time) + "ms.");
 	}
 }

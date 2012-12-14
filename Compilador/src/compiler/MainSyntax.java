@@ -17,7 +17,7 @@ public class MainSyntax {
 
 		SyntaxAnalyserImpl sa = new SyntaxAnalyserImpl();
 
-		sa.compile(args[0]);
+		sa.compile(args[0],args[1]);
 		System.out.println();
 		System.out.println(SymbolTable.getInstance());
 	}
