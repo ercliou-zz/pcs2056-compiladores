@@ -41,7 +41,7 @@ public class ExpressionTempToken extends Token {
 				return TokenType.NUMERIC;
 			}
 		}
-		throw new RuntimeException("Tipos conflitantes.");
+		throw new RuntimeException("Tipos conflitantes. ");
 	}
 
 	private static boolean isComparation(Token token) {

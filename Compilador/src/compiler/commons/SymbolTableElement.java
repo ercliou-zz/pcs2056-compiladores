@@ -3,6 +3,7 @@ package compiler.commons;
 public class SymbolTableElement {
 	private String name;
 	private IdentifierType type;
+	private boolean isArray;
 	private boolean isFunction;
 	private boolean isFunctionParameter;
 	private int ownerFunction;
@@ -12,6 +13,7 @@ public class SymbolTableElement {
 		super();
 		this.name = name;
 		this.type = type;
+		isArray = false;
 		isFunction = false;
 		isFunctionParameter = false;
 	}
@@ -47,15 +49,14 @@ public class SymbolTableElement {
 	public void setType(IdentifierType type) {
 		this.type = type;
 	}
-	
-	public boolean isFunction(){
+
+	public boolean isFunction() {
 		return isFunction;
 	}
-	
-	public boolean isFunctionParameter(){
+
+	public boolean isFunctionParameter() {
 		return isFunctionParameter;
 	}
-	
 
 	public int getOwnerFunction() {
 		return ownerFunction;
@@ -63,6 +64,14 @@ public class SymbolTableElement {
 
 	public int getParameterOrder() {
 		return parameterOrder;
+	}
+
+	public boolean isArray() {
+		return isArray;
+	}
+
+	public void setArray(boolean isArray) {
+		this.isArray = isArray;
 	}
 
 	@Override
